@@ -1,0 +1,6 @@
+outs:
+- md5: 37216ec838a9ffa0ecec061361fa9898.dir
+  size: 140413960
+  nfiles: 4
+  hash: md5
+  path: mlops_project_data
