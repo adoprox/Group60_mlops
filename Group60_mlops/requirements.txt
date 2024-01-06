@@ -1,1 +1,8 @@
-torch >= 2.1.0
+fastai==2.7.13
+matplotlib==3.8.2
+numpy==1.26.3
+pandas==2.1.4
+pytorch_pretrained_bert==0.6.2
+scikit_learn==1.3.2
+torch==2.1.2
+transformers==4.36.2
