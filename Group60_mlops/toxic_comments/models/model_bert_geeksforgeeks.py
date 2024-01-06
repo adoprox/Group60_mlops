@@ -10,9 +10,12 @@ from torch.utils.data import DataLoader, TensorDataset
 from transformers import BertTokenizer, BertForSequenceClassification, AdamW
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score
+from tqdm import tqdm
  
 #to avoid warnings
 import warnings
+
+# this code is based on: https://www.geeksforgeeks.org/toxic-comment-classification-using-bert/
 
 
 data = pd.read_csv("./Group60_mlops/data/raw/train.csv")
@@ -153,7 +156,7 @@ def train_model(model, train_loader, optimizer, device, num_epochs):
         total_loss = 0
  
         # Loop through the batches in the training data
-        for batch in train_loader:
+        for batch in tqdm(train_loader):
             input_ids, attention_mask, labels = [t.to(device) for t in batch]
  
             optimizer.zero_grad()
@@ -185,4 +188,14 @@ def train_model(model, train_loader, optimizer, device, num_epochs):
  
  
 # Call the function to train the model
-train_model(model, train_loader, optimizer, device, num_epochs=3)
+train_model(model, train_loader, optimizer, device, num_epochs=1)
+
+# Save the tokenizer and model in the same directory
+output_dir = "./Group60_mlops/models/bert_trained"
+# Save model's state dictionary and configuration
+model.save_pretrained(output_dir)
+# Save tokenizer's configuration and vocabulary
+tokenizer.save_pretrained(output_dir)
+
+# TODO: better validation, refactoring (moving training code into train_model.py), move data preprocessing into the respective folder,
+# add pytorch-lightning, implement predict_model function, add configuration with hydra, logging with wandb ....
