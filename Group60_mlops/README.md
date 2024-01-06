@@ -61,3 +61,8 @@ The directory structure of the project looks like this:
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
 started with Machine Learning Operations (MLOps).
+
+## Using DVC and working with files
+git clone https://github.com/adoprox/Group60_mlops.git
+cd Group60_mlops.git 
+dvc pull
