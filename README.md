@@ -5,13 +5,13 @@ Using this dataset
 https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge
 
 ## Overall goal of the project
-Write a classifier for toxic comments from the Kaggl toxic comment classification competition. The classifier should take one comment and output the probability of the comment belonging in each of the 7 classes.
+The project aims to develop a classifier for identifying toxic comments, as part of the Kaggle Toxic Comment Classification Challenge. This classifier's primary function is to analyze individual comments and estimate the likelihood of each comment falling into one of seven categories. The categories include six specific classes: toxic, severe toxic, obscene, threat, insult, and identity hate, along with a seventh for general classification.
 
 ## Framework
-FastAi and PyTorch-Transformers (formerly known as pytorch_pretrained_bert) from HuggingFace. The second framework will be used to load the pretrained model and tokenizer; while the first one will be used (instead of PyTorch-Lightning to improve the code, this because FastAi was used in the example we based our model on).
+To achieve this, we are utilizing a combination of FastAi and PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. On the other hand, FastAi, chosen over PyTorch-Lightning, serves to enhance the coding process. Our decision to use FastAi was influenced by its implementation in a similar model, which we are using as a reference.
 
 ## Data
-We will use the Kaggle Toxic comment classification dataset. The dataset consists of comments from Wikipedia, with a label for each comment. Labels consist of one of 6 classes: toxic, severe_toxic, obscene, threat, insult, identity_hate. Link: [Toxic comment classification challenge data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
+Our data source is the Kaggle Toxic Comment Classification dataset, which comprises various comments sourced from Wikipedia. Each comment in this dataset is tagged with one or more labels corresponding to the six toxic categories. The dataset's structure and labels allow for a comprehensive training regime, catering to our classifier's need for diverse and complex examples. Interested parties can access the dataset through the provided Kaggle link: [Toxic comment classification challenge data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
 
 ## Models
-We will use a pretrained BERT model and then train the model on the dataset. Because the BERT base model was trained on a large amount of data, training it on this specific task should yield good results.
+For the modeling aspect, we are leveraging a pre-trained BERT (Bidirectional Encoder Representations from Transformers) model. The choice of BERT is strategic; given its extensive training on a large corpus, it is highly capable of understanding nuanced language patterns. Our approach involves further training this base model on the specific dataset to fine-tune it for our classification task. This method is expected to harness BERT's advanced language processing capabilities, making it adept at recognizing and classifying varying degrees of toxicity in comments.
