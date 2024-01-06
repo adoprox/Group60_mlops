@@ -66,3 +66,4 @@ started with Machine Learning Operations (MLOps).
 git clone https://github.com/adoprox/Group60_mlops.git
 cd Group60_mlops.git 
 dvc pull
+This creates a new directory with all the files needed for the model to work. 
