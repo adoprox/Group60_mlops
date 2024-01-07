@@ -1,0 +1,17 @@
+hyperparameters:
+  batch_size : 8
+  lr : 2e-5
+  num_epochs : 1
+  print_every : 7
+  bert_model_name : 'bert-base-uncased'
+  num_workers : 3
+  use_short_data : 1000 # None if we should use the whole data
+  seed : 42
+  device : "cpu"
+
+
+# I got an warning and ChatGPT suggest that
+# I added this
+hydra:
+  run:
+    dir: .
