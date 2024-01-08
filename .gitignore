@@ -1,8 +1,10 @@
 /ml_project_data
 
+# exclude docs folder
 docs/site/
 
-data
+# exclude root data folder
+/data
 
 # test cache
 manual_test/
