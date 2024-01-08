@@ -7,7 +7,7 @@ hyperparameters:
   num_workers : 3
   use_short_data : 1000 # None if we should use the whole data
   seed : 42
-  device : "cpu"
+  device : "cpu" # set to gpu if you want to use any gpu
 
 
 # I got an warning and ChatGPT suggest that
