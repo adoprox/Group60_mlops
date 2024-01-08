@@ -64,7 +64,7 @@ class ToxicCommentClassifier(pl.LightningModule):
 
 
 
-@hydra.main(version_base= None, config_name="config_train.yaml", config_path = "")
+@hydra.main(version_base= "1.3", config_name="config_train.yaml", config_path = "")
 def train(config):
     # Initialize TensorBoard logger
     logger = pl.loggers.TensorBoardLogger("Group60_mlops/models", name="bert_toxic_classifier_logs")
