@@ -7,7 +7,7 @@ from transformers import BertForSequenceClassification, BertTokenizer
 # for managin hyperparameters
 import hydra
 
-PATH_TO_DATA = "./Group60_mlops/data/processed/"
+PATH_TO_DATA = "./data/processed/"
 
 # Move model to GPU if available
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -67,7 +67,7 @@ class ToxicCommentClassifier(pl.LightningModule):
 @hydra.main(version_base= "1.3", config_name="config_train.yaml", config_path = "")
 def train(config):
     # Initialize TensorBoard logger
-    logger = pl.loggers.TensorBoardLogger("Group60_mlops/models", name="bert_toxic_classifier_logs")
+    logger = pl.loggers.TensorBoardLogger("./models", name="bert_toxic_classifier_logs")
 
     # Set seed
     torch.manual_seed(config.hyperparameters.seed)
