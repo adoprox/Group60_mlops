@@ -6,7 +6,7 @@ from transformers import BertForSequenceClassification, BertTokenizer
 # for managin hyperparameters
 import hydra
 
-PATH_TO_DATA = "./data/processed/"
+PATH_TO_DATA = "./Group60_mlops/data/processed/"
 
 # Move model to GPU if available
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
