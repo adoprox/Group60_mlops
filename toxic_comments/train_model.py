@@ -1,6 +1,5 @@
 import torch
 from torch.utils.data import DataLoader, Subset
-from torch import nn
 import pytorch_lightning as pl
 from transformers import BertForSequenceClassification, BertTokenizer
 

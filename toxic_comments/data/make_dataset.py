@@ -1,18 +1,12 @@
-import numpy as np
 import pandas as pd
  
 import torch
-from torch.utils.data import DataLoader, TensorDataset
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW
+from torch.utils.data import TensorDataset
+from transformers import BertTokenizer
 from sklearn.model_selection import train_test_split
- 
-#to avoid warnings
-import warnings
 
-# fo configs
-import hydra 
-from omegaconf import OmegaConf
-
+# to configs
+import hydra
 
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments, labels, max_length):

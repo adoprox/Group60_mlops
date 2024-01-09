@@ -1,2 +1,1 @@
-from toxic_comments.models.model import MyNeuralNet
-from toxic_comments.predict_model import predict
+#from toxic_comments.predict_model import predict
