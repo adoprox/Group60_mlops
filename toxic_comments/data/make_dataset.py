@@ -16,6 +16,8 @@ from omegaconf import OmegaConf
 
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments, labels, max_length):
+    """Return  tokenized inputs, attention masks, and labels as PyTorch tensors."""
+
     # Initialize empty lists to store tokenized inputs and attention masks
     input_ids = []
     attention_masks = []
@@ -51,12 +53,12 @@ def tokenize_and_encode(tokenizer, comments, labels, max_length):
  
     # Convert the labels to a PyTorch tensor with the data type float32
     labels = torch.tensor(labels, dtype=torch.float32)
- 
-    # Return the tokenized inputs, attention masks, and labels as PyTorch tensors
+
     return input_ids, attention_masks, labels
 
 @hydra.main(version_base=None, config_name="config_data.yaml", config_path="")
 def make_data(config):
+    """Load data, tokenize them and save in data/processed"""
     ## Hyperparameters
     # seed (to control randomness)
     seed = config.settings.seed
@@ -99,7 +101,6 @@ def make_data(config):
     # Split data into training, testing sets & validation sets
     train_texts, test_texts, train_labels, test_labels = train_test_split(
         dataframe['comment_text'], dataframe.iloc[:, 2:], test_size=test_val_size, random_state=seed)
-
 
     # validation set
     test_texts, val_texts, test_labels, val_labels = train_test_split(
