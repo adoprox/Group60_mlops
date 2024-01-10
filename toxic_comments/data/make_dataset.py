@@ -120,10 +120,10 @@ def make_data(config):
     test_dataset = TensorDataset(test_input_ids, test_attention_masks, test_labels)
 
     # Print information 
-    print("Saving processed data in ./Group60_mlops/data/processed/")
+    print("Saving processed data in ./data/processed/")
 
     #Save datasets
-    PATH = "./Group60_mlops/data/processed/"
+    PATH = "./data/processed/"
     torch.save(train_dataset, PATH + "train.pt")
     torch.save(val_dataset, PATH + "val.pt")
     torch.save(test_dataset, PATH + "test.pt")
