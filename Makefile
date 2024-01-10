@@ -40,6 +40,10 @@ clean:
 data:
 	python $(PROJECT_NAME)/data/make_dataset.py
 
+## Train, save and test the model
+train:
+	python $(PROJECT_NAME)/train_model.py
+
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
