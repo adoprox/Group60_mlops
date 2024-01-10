@@ -66,7 +66,7 @@ def make_data(config):
     bert_model_name = config.settings.bert_model_name
 
     # Load data
-    train_data = pd.read_csv("./Group60_mlops/data/raw/train.csv")
+    train_data = pd.read_csv("./data/raw/train.csv")
     
 
     column_labels = train_data.columns.tolist()[2:]
