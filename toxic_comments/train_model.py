@@ -12,7 +12,7 @@ import hydra
 
 
 # Move model to GPU if available
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
 @hydra.main(version_base= "1.3", config_name="config_train.yaml", config_path = "")
@@ -22,7 +22,7 @@ def train(config):
     wandb_logger = WandbLogger(log_model="all", project="bert_toxic_classifier")
 
     # log training device
-    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')  
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     wandb.log({"device": str(device)})
 
     wandb.log({"configuration": OmegaConf.to_yaml(config)})
@@ -35,16 +35,18 @@ def train(config):
         logger=wandb_logger,
         accelerator=config.hyperparameters.device,
         max_epochs=config.hyperparameters.num_epochs,
-        log_every_n_steps= config.hyperparameters.print_every
+        log_every_n_steps=config.hyperparameters.print_every,
     )
 
     # Create instance of your LightningModule
-    model = ToxicCommentClassifier(batch_size=config.hyperparameters.batch_size,
-                                   lr=config.hyperparameters.lr,
-                                   bert_model_name=config.hyperparameters.bert_model_name,
-                                   use_short_data=config.hyperparameters.use_short_data,
-                                   num_workers=config.hyperparameters.num_workers) # Use small dataset to speed up training
-    
+    model = ToxicCommentClassifier(
+        batch_size=config.hyperparameters.batch_size,
+        lr=config.hyperparameters.lr,
+        bert_model_name=config.hyperparameters.bert_model_name,
+        use_short_data=config.hyperparameters.use_short_data,
+        num_workers=config.hyperparameters.num_workers,
+    )  # Use small dataset to speed up training
+
     wandb.watch(model, log_freq=100)
 
     # Train the model
@@ -54,6 +56,7 @@ def train(config):
     # Test the model
     trainer.test(model)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     wandb.init(project="bert_toxic_classifier")
     train()
