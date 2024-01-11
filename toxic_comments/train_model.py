@@ -4,7 +4,6 @@ import pytorch_lightning as pl
 import wandb
 from pytorch_lightning.loggers import WandbLogger
 from omegaconf import OmegaConf
-import numpy as np
 
 from models.model import ToxicCommentClassifier
 # for managin hyperparameters

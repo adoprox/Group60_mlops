@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 import wandb
 
 
-<<<<<<< HEAD
 PATH_TO_DATA = "./data/processed/"
 
 # Define a pytorch ligtning module
@@ -68,33 +67,11 @@ class ToxicCommentClassifier(pl.LightningModule):
         accuracy = accuracy_score(true_labels, predicted_labels)
         precision = precision_score(true_labels, predicted_labels, average='micro')
         recall = recall_score(true_labels, predicted_labels, average='micro')
-=======
-class MyNeuralNet(torch.nn.Module):
-    """Basic neural network class.
-
-    Args:
-        in_features: number of input features
-        out_features: number of output features
-
-    """
-
-    def __init__(self, in_features: int, out_features: int) -> None:
-        self.l1 = torch.nn.Linear(in_features, 500)
-        self.l2 = torch.nn.Linear(500, out_features)
-        self.r = torch.nn.ReLU()
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass of the model.
-
-        Args:
-            x: input tensor expected to be of shape [N,in_features]
->>>>>>> 00d9934fa16797fc145f63aeca4dc24e7dc47eba
 
         self.log('test_accuracy', accuracy, on_epoch=True, prog_bar=True)
         self.log('test_precision', precision, on_epoch=True, prog_bar=True)
         self.log('test_recall', recall, on_epoch=True, prog_bar=True)
 
-<<<<<<< HEAD
         return accuracy,precision,recall
 
     def configure_optimizers(self):
@@ -120,7 +97,3 @@ class MyNeuralNet(torch.nn.Module):
             val_indx = list(range(int(self.use_short_data / 10)))
             val_dataset = Subset(val_dataset, val_indx)
         return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_workers)
-=======
-        """
-        return self.l2(self.r(self.l1(x)))
->>>>>>> 00d9934fa16797fc145f63aeca4dc24e7dc47eba
