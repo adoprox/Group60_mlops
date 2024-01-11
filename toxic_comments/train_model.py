@@ -6,6 +6,7 @@ from pytorch_lightning.loggers import WandbLogger
 from omegaconf import OmegaConf
 
 from models.model import ToxicCommentClassifier
+
 # for managin hyperparameters
 import hydra
 
@@ -14,7 +15,7 @@ import hydra
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
-@hydra.main(version_base= "1.3", config_name="config_train.yaml", config_path = "")
+@hydra.main(version_base="1.3", config_name="config_train.yaml", config_path="")
 def train(config):
     # Initialize TensorBoard and wandb logger
     logger = pl.loggers.TensorBoardLogger("./models", name="bert_toxic_classifier_logs")
