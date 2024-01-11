@@ -28,3 +28,6 @@ jobs:
       run: |
         ruff check
         ruff format
+        git add *
+        git commit -m "auto-formatting by ruff"
+        git push
