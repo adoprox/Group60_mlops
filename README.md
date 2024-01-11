@@ -78,9 +78,13 @@ started with Machine Learning Operations (MLOps).
 
 ## Using DVC and working with files
 git clone https://github.com/adoprox/Group60_mlops.git
-cd Group60_mlops.git 
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
+
+## Commands to build docker containers
+1. docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest
+2. docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest 
+Predict is still under work 
 
 ## Gcloud setup
 The following section contains documentation and rules for how to interact with the cloud setup.
