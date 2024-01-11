@@ -5,65 +5,71 @@ from models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
+import pandas as pd
+import numpy as np
 
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments):
-    """Return  tokenized inputs, attention masks, and labels as PyTorch tensors."""
+    """Return  tokenized inputs, attention masks as PyTorch tensors."""
 
     # Initialize empty lists to store tokenized inputs and attention masks
     input_ids = []
     attention_masks = []
- 
+
     # Iterate through each comment in the 'comments' list
     for comment in comments:
- 
+
+        # check the validity of data format
+        if type(comment) is not list:
+            comment = [comment]
+
         # Tokenize and encode the comment using the BERT tokenizer
-        encoded_dict = tokenizer.encode_plus(comment,
+        encoded_dict = tokenizer.encode_plus(
+            comment,
             # Add special tokens like [CLS] and [SEP]
             add_special_tokens=True,
- 
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
-            pad_to_max_length=True, 
+            pad_to_max_length=True,
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
- 
             # Return PyTorch tensors
-            return_tensors='pt'
+            return_tensors="pt",
         )
- 
+
         # Append the tokenized input and attention mask to their respective lists
-        input_ids.append(encoded_dict['input_ids'])
-        attention_masks.append(encoded_dict['attention_mask'])
- 
+        input_ids.append(encoded_dict["input_ids"])
+        attention_masks.append(encoded_dict["attention_mask"])
+
     # Concatenate the tokenized inputs and attention masks into tensors
     input_ids = torch.cat(input_ids, dim=0)
     attention_masks = torch.cat(attention_masks, dim=0)
 
     return input_ids, attention_masks
 
-@hydra.main(version_base= "1.3", config_name="config_predict.yaml", config_path = "")
-def predict_user_input(config):
+
+def predict(inputs, config):
 
     # define the device to use
     device = config.hyperparameters.device
-    
-    # Check if all the arguments are present and load the input
-    if len(sys.argv) != 2:
-        raise ValueError('Wrong number of Arguments! use the format python ../predict_model.py \'+text=text_to_classify\'')
-    user_input = [config.text]
-    
+    checkpoint_path = config.checkpoint_path
+
     #load the model
-    model = ToxicCommentClassifier.load_from_checkpoint("models/bert_toxic_classifier_logs/version_16/checkpoints/epoch=0-step=125.ckpt")
+    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.hyperparameters.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name,do_lower_case=True)
-    input_ids, attention_masks = tokenize_and_encode(tokenizer,user_input)
+
+    input_ids = []
+    attention_masks = []
+
+    input_ids, attention_masks = tokenize_and_encode(tokenizer,inputs)
 
     user_dataset = TensorDataset(input_ids, attention_masks)
     user_loader = DataLoader(user_dataset, batch_size=1, shuffle=False)
 
+    predicted = []
     model.eval()
     with torch.no_grad():
 	    for batch in user_loader:
@@ -71,22 +77,46 @@ def predict_user_input(config):
               outputs = model(input_ids, attention_mask=attention_mask)
               logits = outputs.logits
               predictions = torch.sigmoid(logits)
+              predicted.append(predictions.cpu().numpy())
         
-    # Keep just the meaningful label
-    predicted_labels = (predictions.cpu().numpy() > 0.8).astype(int)
+    return predicted
+
+@hydra.main(version_base= "1.3", config_name="config_predict.yaml", config_path = "")
+def predict_user_input(config):
+
+    # Compute prediction
+    user_input = [config.text]
+    result = predict(user_input,config)
+
+    # Save results
+    labels_list = ['toxic', 'severe_toxic', 'obscene',
+				'threat', 'insult', 'identity_hate']
+    r_df = pd.DataFrame(result[0], columns=labels_list)
+    r_df.to_csv("outputs/predictions.csv")
+
+@hydra.main(version_base= "1.3", config_name="config_predict.yaml", config_path = "")
+def predict_file_input(config):
+    
+    # Load data
+    file_input = pd.read_csv(config.file)
+
+    # Compute predictions
+    results = predict(list(file_input['Comment']),config)
 
     labels_list = ['toxic', 'severe_toxic', 'obscene',
 				'threat', 'insult', 'identity_hate']
-	
 
-    result = [labels_list[i] for i in range(len(predicted_labels[0]))  if predicted_labels[0][i]>0]
-
-    # Print the type of toxicity, if present
-    if len(result)==0:
-        print('Not Toxic')
-    else:
-        print(result)
+    # save the result
+    r_df = pd.DataFrame(np.concatenate(results), columns=labels_list)
+    r_df.to_csv("outputs/predictions.csv")
 
 if __name__ == '__main__':
+
+    if len(sys.argv) == 1:
+        raise ValueError('Wrong number of Arguments! use one of the format \n - python ../predict_model.py \'+file=path_file\' \n -python ../predict_model.py \'+file=path_file\' ')
     
-    predict_user_input()
+    if sys.argv[1].startswith('+text'):
+        predict_user_input()
+    elif sys.argv[1].startswith('+file'):
+        predict_file_input()
+    else: print(sys.argv[1])
