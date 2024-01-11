@@ -123,4 +123,5 @@ if __name__ == '__main__':
         predict_user_input()
     elif sys.argv[1].startswith('+file'):
         predict_file_input()
-    else: raise ValueError(sys.argv[1]+': Invalid command')
+    else: 
+        raise ValueError(sys.argv[1]+': Invalid command')
