@@ -1,21 +1,17 @@
-import numpy as np
 import pandas as pd
  
 import torch
-from torch.utils.data import DataLoader, TensorDataset
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW
+from torch.utils.data import TensorDataset
+from transformers import BertTokenizer
 from sklearn.model_selection import train_test_split
- 
-#to avoid warnings
-import warnings
 
-# fo configs
-import hydra 
-from omegaconf import OmegaConf
-
+# to configs
+import hydra
 
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments, labels, max_length):
+    """Return  tokenized inputs, attention masks, and labels as PyTorch tensors."""
+
     # Initialize empty lists to store tokenized inputs and attention masks
     input_ids = []
     attention_masks = []
@@ -51,12 +47,12 @@ def tokenize_and_encode(tokenizer, comments, labels, max_length):
  
     # Convert the labels to a PyTorch tensor with the data type float32
     labels = torch.tensor(labels, dtype=torch.float32)
- 
-    # Return the tokenized inputs, attention masks, and labels as PyTorch tensors
+
     return input_ids, attention_masks, labels
 
 @hydra.main(version_base=None, config_name="config_data.yaml", config_path="")
 def make_data(config):
+    """Load data, tokenize them and save in data/processed"""
     ## Hyperparameters
     # seed (to control randomness)
     seed = config.settings.seed
@@ -70,7 +66,7 @@ def make_data(config):
     bert_model_name = config.settings.bert_model_name
 
     # Load data
-    train_data = pd.read_csv("./Group60_mlops/data/raw/train.csv")
+    train_data = pd.read_csv("./data/raw/train.csv")
     
 
     column_labels = train_data.columns.tolist()[2:]
@@ -100,7 +96,6 @@ def make_data(config):
     train_texts, test_texts, train_labels, test_labels = train_test_split(
         dataframe['comment_text'], dataframe.iloc[:, 2:], test_size=test_val_size, random_state=seed)
 
-
     # validation set
     test_texts, val_texts, test_labels, val_labels = train_test_split(
         test_texts, test_labels, test_size=val_size, random_state=seed)
@@ -125,10 +120,10 @@ def make_data(config):
     test_dataset = TensorDataset(test_input_ids, test_attention_masks, test_labels)
 
     # Print information 
-    print("Saving processed data in ./Group60_mlops/data/processed/")
+    print("Saving processed data in ./data/processed/")
 
     #Save datasets
-    PATH = "./Group60_mlops/data/processed/"
+    PATH = "./data/processed/"
     torch.save(train_dataset, PATH + "train.pt")
     torch.save(val_dataset, PATH + "val.pt")
     torch.save(test_dataset, PATH + "test.pt")
