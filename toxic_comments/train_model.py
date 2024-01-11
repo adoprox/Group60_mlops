@@ -69,7 +69,7 @@ class ToxicCommentClassifier(pl.LightningModule):
     
     def on_test_epoch_end(self):
         outputs = self.test_step_outputs
-        predicted_probs = np.concatenate([out['predicted_probs'] for out in outputs], axis=0)
+        # predicted_probs = np.concatenate([out['predicted_probs'] for out in outputs], axis=0)
         predicted_labels = np.concatenate([out['predicted_labels'] for out in outputs], axis=0)
         true_labels = np.concatenate([out['true_labels'] for out in outputs], axis=0)
 
