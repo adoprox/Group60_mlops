@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 import torch
-from torch.utils.data import TensorDataset, DataLoader
+from torch.utils.data import DataLoader
 from tests import _PATH_DATA
 
 
@@ -79,8 +79,8 @@ def run_data_shape_test(loader: torch.utils.data.DataLoader, max_length):
     for batch in loader:
         input_ids, attention_masks, _ = batch
         for i in range(len(input_ids)):
-            assert input_ids[i].shape == torch.Size([max_length]), f"Input ID shape is not as expected"
-            assert attention_masks[i].shape == torch.Size([max_length]), f"Attention mask shape is not as expected"
+            assert input_ids[i].shape == torch.Size([max_length]), f"Input ID shape is {input_ids[i].shape}, expected {torch.Size([max_length])}"
+            assert attention_masks[i].shape == torch.Size([max_length]), f"Attention mask shape is {attention_masks[i].shape}, expected {torch.Size([max_length])}"
 
 
 def run_data_labels_test(loader: torch.utils.data.DataLoader):
