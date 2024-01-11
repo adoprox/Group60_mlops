@@ -17,4 +17,3 @@ RUN pip install . --no-deps --no-cache-dir
 #Add commands to work with gcp
 
 #ENTRYPOINT ["python", "-u", "toxic_comments/train_model.py"]
-ENTRYPOINT [ "make" "data" ]
