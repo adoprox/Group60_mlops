@@ -1,8 +1,6 @@
 name: "Run codechecks"
 
 on:
-  push:
-    branches: [10-add-code-check-action] 
   pull_request:
     branches: [ master, main ]
 
@@ -33,7 +31,7 @@ jobs:
     - name: Run ruff check
       run: |
         ruff check
-        
+
     - name: Run ruff format
       run: |
         ruff format
