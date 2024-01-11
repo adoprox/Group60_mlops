@@ -1,13 +1,12 @@
 import torch
-#from torch.utils.data import DataLoader, Subset
 import pytorch_lightning as pl
 
 import wandb
 from pytorch_lightning.loggers import WandbLogger
 from omegaconf import OmegaConf
 import numpy as np
-from sklearn.metrics import accuracy_score, precision_score, recall_score
-from toxic_comments.models import ToxicCommentClassifier
+
+from models.model import ToxicCommentClassifier
 # for managin hyperparameters
 import hydra
 
