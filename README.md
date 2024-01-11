@@ -81,10 +81,21 @@ git clone https://github.com/adoprox/Group60_mlops.git
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
 
-## Commands to build docker containers
-1. docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest
-2. docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest 
-Predict is still under work 
+## Docker containers
+
+### Commands to build docker containers
+1. Training container: `docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest`
+2. Prediction container: `docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest`
+Predict is still under work
+
+### Commands to run docker containers
+The docker containers are set up without an entrypoint. The data root folder is in the configuration, the default is set to ./data/processed.
+
+#### Running locally with default root data directory:
+`docker run -v ./data:/data -e WANDB_API_KEY='<your-api-key>' group60_trainer:latest python3 ./toxic_comments/train_model.py`
+
+#### Running in cloud with GCS bucket as root data directory: 
+TODO
 
 ## Gcloud setup
 The following section contains documentation and rules for how to interact with the cloud setup.
