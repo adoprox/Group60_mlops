@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
-from train_model import ToxicCommentClassifier
+from models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
