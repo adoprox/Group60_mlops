@@ -8,6 +8,7 @@ import sys
 import pandas as pd
 import numpy as np
 
+
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments):
     """Return  tokenized inputs, attention masks as PyTorch tensors."""
@@ -16,12 +17,10 @@ def tokenize_and_encode(tokenizer, comments):
     input_ids = []
     attention_masks = []
 
-
     # Iterate through each comment in the 'comments' list
     for comment in comments:
-
         # check the validity of data format
-        if not isinstance(comment,list):
+        if not isinstance(comment, list):
             comment = [comment]
 
         # Tokenize and encode the comment using the BERT tokenizer
@@ -38,7 +37,6 @@ def tokenize_and_encode(tokenizer, comments):
             return_tensors="pt",
         )
 
-
         # Append the tokenized input and attention mask to their respective lists
         input_ids.append(encoded_dict["input_ids"])
         attention_masks.append(encoded_dict["attention_mask"])
@@ -51,77 +49,75 @@ def tokenize_and_encode(tokenizer, comments):
 
 
 def predict(inputs, config):
-
     # define the device to use
     device = config.hyperparameters.device
     checkpoint_path = config.checkpoint_path
 
-    #load the model
+    # load the model
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.hyperparameters.bert_model_name
-    tokenizer = BertTokenizer.from_pretrained(bert_model_name,do_lower_case=True)
+    tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
 
     input_ids = []
     attention_masks = []
 
-    input_ids, attention_masks = tokenize_and_encode(tokenizer,inputs)
+    input_ids, attention_masks = tokenize_and_encode(tokenizer, inputs)
 
     user_dataset = TensorDataset(input_ids, attention_masks)
     user_loader = DataLoader(user_dataset, batch_size=1, shuffle=False)
-
 
     # Predict each comment given
     predicted = []
     model.eval()
     with torch.no_grad():
-	    for batch in user_loader:
-              input_ids, attention_mask = [t.to(device) for t in batch]
-              outputs = model(input_ids, attention_mask=attention_mask)
-              logits = outputs.logits
-              predictions = torch.sigmoid(logits)
-              predicted.append(predictions.cpu().numpy())
-        
+        for batch in user_loader:
+            input_ids, attention_mask = [t.to(device) for t in batch]
+            outputs = model(input_ids, attention_mask=attention_mask)
+            logits = outputs.logits
+            predictions = torch.sigmoid(logits)
+            predicted.append(predictions.cpu().numpy())
+
     return predicted
 
-@hydra.main(version_base= "1.3", config_name="config_predict.yaml", config_path = "")
-def predict_user_input(config):
 
+@hydra.main(version_base="1.3", config_name="config_predict.yaml", config_path="")
+def predict_user_input(config):
     # Compute prediction
     user_input = [config.text]
-    result = predict(user_input,config)
+    result = predict(user_input, config)
 
     # Save results
-    labels_list = ['toxic', 'severe_toxic', 'obscene',
-				'threat', 'insult', 'identity_hate']
+    labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
     r_df = pd.DataFrame(result[0], columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
-@hydra.main(version_base= "1.3", config_name="config_predict.yaml", config_path = "")
+
+@hydra.main(version_base="1.3", config_name="config_predict.yaml", config_path="")
 def predict_file_input(config):
-    
     # Load data
     file_input = pd.read_csv(config.file)
 
     # Compute predictions
-    results = predict(list(file_input['Comment']),config)
+    results = predict(list(file_input["Comment"]), config)
 
-    labels_list = ['toxic', 'severe_toxic', 'obscene',
-				'threat', 'insult', 'identity_hate']
+    labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
 
     # save the result
     r_df = pd.DataFrame(np.concatenate(results), columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
-if __name__ == '__main__':
 
+if __name__ == "__main__":
     if len(sys.argv) == 1:
-        raise ValueError('Wrong number of Arguments! use one of the format \n - python ../predict_model.py \'+file=path_file\' \n -python ../predict_model.py \'+file=path_file\' ')
-    
-    if sys.argv[1].startswith('+text'):
+        raise ValueError(
+            "Wrong number of Arguments! use one of the format \n - python ../predict_model.py '+file=path_file' \n -python ../predict_model.py '+file=path_file' "
+        )
+
+    if sys.argv[1].startswith("+text"):
         predict_user_input()
-    elif sys.argv[1].startswith('+file'):
+    elif sys.argv[1].startswith("+file"):
         predict_file_input()
-    else: 
-        raise ValueError(sys.argv[1]+': Invalid command')
+    else:
+        raise ValueError(sys.argv[1] + ": Invalid command")
