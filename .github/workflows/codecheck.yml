@@ -28,6 +28,7 @@ jobs:
       run: |
         ruff check
         ruff format
-        git add *
-        git commit -m "auto-formatting by ruff"
-        git push
+    
+    - name: Auto commit format changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      
