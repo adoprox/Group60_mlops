@@ -1,5 +1,9 @@
 /ml_project_data
 
+# ignore generated logging folders and files
+/wand
+/outputs
+
 # exclude docs folder
 docs/site/
 
