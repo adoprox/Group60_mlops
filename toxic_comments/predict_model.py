@@ -21,7 +21,7 @@ def tokenize_and_encode(tokenizer, comments):
     for comment in comments:
 
         # check the validity of data format
-        if type(comment) is not list:
+        if not isinstance(comment,list):
             comment = [comment]
 
         # Tokenize and encode the comment using the BERT tokenizer
@@ -123,4 +123,4 @@ if __name__ == '__main__':
         predict_user_input()
     elif sys.argv[1].startswith('+file'):
         predict_file_input()
-    else: ValueError(sys.argv[1],': Invalid command')
+    else: raise ValueError(sys.argv[1]+': Invalid command')
