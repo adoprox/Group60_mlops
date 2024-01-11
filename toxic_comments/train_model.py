@@ -2,6 +2,9 @@ import torch
 from torch.utils.data import DataLoader, Subset
 import pytorch_lightning as pl
 from transformers import BertForSequenceClassification, BertTokenizer
+import wandb
+from pytorch_lightning.loggers import WandbLogger
+from omegaconf import OmegaConf
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
@@ -12,7 +15,6 @@ PATH_TO_DATA = "./data/processed/"
 
 # Move model to GPU if available
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-print(f'Using device: {device}')
 
 
 # Define a pytorch ligtning module
@@ -39,6 +41,7 @@ class ToxicCommentClassifier(pl.LightningModule):
         outputs = self(input_ids, attention_mask, labels)
         loss = outputs.loss
         self.log('train_loss', loss)
+        wandb.log({"loss": loss})
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -108,15 +111,22 @@ class ToxicCommentClassifier(pl.LightningModule):
 
 @hydra.main(version_base= "1.3", config_name="config_train.yaml", config_path = "")
 def train(config):
-    # Initialize TensorBoard logger
+    # Initialize TensorBoard and wandb logger
     logger = pl.loggers.TensorBoardLogger("./models", name="bert_toxic_classifier_logs")
+    wandb_logger = WandbLogger(log_model="all", project="bert_toxic_classifier")
+
+    # log training device
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')  
+    wandb.log({"device": str(device)})
+
+    wandb.log({"configuration": OmegaConf.to_yaml(config)})
 
     # Set seed
     torch.manual_seed(config.hyperparameters.seed)
 
     # Define Lightning Trainer
     trainer = pl.Trainer(
-        logger=logger,
+        logger=wandb_logger,
         accelerator=config.hyperparameters.device,
         max_epochs=config.hyperparameters.num_epochs,
         log_every_n_steps= config.hyperparameters.print_every
@@ -129,6 +139,8 @@ def train(config):
                                    use_short_data=config.hyperparameters.use_short_data,
                                    num_workers=config.hyperparameters.num_workers) # Use small dataset to speed up training
     
+    wandb.watch(model, log_freq=100)
+
     # Train the model
     trainer.fit(model)
     # save logged data
@@ -137,4 +149,5 @@ def train(config):
     trainer.test(model)
 
 if __name__ == '__main__':
+    wandb.init(project="bert_toxic_classifier")
     train()
