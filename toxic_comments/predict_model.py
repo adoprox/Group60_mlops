@@ -16,6 +16,7 @@ def tokenize_and_encode(tokenizer, comments):
     input_ids = []
     attention_masks = []
 
+
     # Iterate through each comment in the 'comments' list
     for comment in comments:
 
@@ -26,18 +27,26 @@ def tokenize_and_encode(tokenizer, comments):
         # Tokenize and encode the comment using the BERT tokenizer
         encoded_dict = tokenizer.encode_plus(
             comment,
+        encoded_dict = tokenizer.encode_plus(
+            comment,
             # Add special tokens like [CLS] and [SEP]
             add_special_tokens=True,
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
             pad_to_max_length=True,
+            pad_to_max_length=True,
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
             return_tensors="pt",
+            return_tensors="pt",
         )
 
+
         # Append the tokenized input and attention mask to their respective lists
+        input_ids.append(encoded_dict["input_ids"])
+        attention_masks.append(encoded_dict["attention_mask"])
+
         input_ids.append(encoded_dict["input_ids"])
         attention_masks.append(encoded_dict["attention_mask"])
 
