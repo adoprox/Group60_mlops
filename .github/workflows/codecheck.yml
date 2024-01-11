@@ -1,0 +1,30 @@
+name: "Run codechecks"
+
+on:
+  push:
+    branches: [10-add-code-check-action] 
+  pull_request:
+    branches: [ master, main ]
+
+
+jobs:
+  build:
+
+    runs-on: [ubuntu-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up Python 3.11.5
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11.5
+        cache: 'pip' # caching pip dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements_dev.txt
+    - name: Run ruff checks
+      run: |
+        ruff check
+        ruff format
