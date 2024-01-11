@@ -81,3 +81,15 @@ git clone https://github.com/adoprox/Group60_mlops.git
 cd Group60_mlops.git 
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
+
+## Gcloud setup
+The following section contains documentation and rules for how to interact with the cloud setup.
+
+### Region
+
+All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-grained zones are needed)
+
+### Storage buckets
+
+Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
+Any trained models should be added to the bucket group_60_models.
