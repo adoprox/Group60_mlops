@@ -11,12 +11,14 @@ train_file = f"{Path(_PATH_DATA)}/processed/train.pt"
 val_file = f"{Path(_PATH_DATA)}/processed/val.pt"
 test_file = f"{Path(_PATH_DATA)}/processed/test.pt"
 
-max_seq_length = 128 #from hydra config
+max_seq_length = 128  # from hydra config
+
+
 @pytest.mark.skipif(
-    not os.path.exists(train_file) or not os.path.exists(val_file) or not os.path.exists(test_file), reason="Data files not found"
+    not os.path.exists(train_file) or not os.path.exists(val_file) or not os.path.exists(test_file),
+    reason="Data files not found",
 )
 def test_data():
-    
     # Load datasets
     train_dataset = torch.load(train_file)
     val_dataset = torch.load(val_file)
@@ -26,7 +28,6 @@ def test_data():
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=False)
     val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
-
 
     # Define the expected sizes of your datasets
     # Replace with the actual expected sizes
@@ -39,11 +40,9 @@ def test_data():
     run_data_length_test(val_loader, N_val)
     run_data_length_test(test_loader, N_test)
 
-
     run_data_shape_test(train_loader, max_seq_length)
     run_data_shape_test(val_loader, max_seq_length)
     run_data_shape_test(test_loader, max_seq_length)
-    
 
     run_data_labels_test(train_loader)
     run_data_labels_test(val_loader)
@@ -79,8 +78,12 @@ def run_data_shape_test(loader: torch.utils.data.DataLoader, max_length):
     for batch in loader:
         input_ids, attention_masks, _ = batch
         for i in range(len(input_ids)):
-            assert input_ids[i].shape == torch.Size([max_length]), f"Input ID shape is {input_ids[i].shape}, expected {torch.Size([max_length])}"
-            assert attention_masks[i].shape == torch.Size([max_length]), f"Attention mask shape is {attention_masks[i].shape}, expected {torch.Size([max_length])}"
+            assert input_ids[i].shape == torch.Size(
+                [max_length]
+            ), f"Input ID shape is {input_ids[i].shape}, expected {torch.Size([max_length])}"
+            assert attention_masks[i].shape == torch.Size(
+                [max_length]
+            ), f"Attention mask shape is {attention_masks[i].shape}, expected {torch.Size([max_length])}"
 
 
 def run_data_labels_test(loader: torch.utils.data.DataLoader):
