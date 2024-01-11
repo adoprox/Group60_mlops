@@ -6,12 +6,15 @@ RUN apt update && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
+COPY Makefile/ Makefile/
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
-COPY data/ data/
+#COPY data/ data/
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
+#Add commands to work with gcp
 
-ENTRYPOINT ["python", "-u", "toxic_comments/train_model.py"]
+#ENTRYPOINT ["python", "-u", "toxic_comments/train_model.py"]
+ENTRYPOINT [ "make" "data" ]
