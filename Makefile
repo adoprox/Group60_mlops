@@ -44,6 +44,10 @@ data:
 train:
 	python $(PROJECT_NAME)/train_model.py
 
+## Predict
+predict:
+	python $(PROJECT_NAME)/predict_model.py $(TEXT)
+
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
