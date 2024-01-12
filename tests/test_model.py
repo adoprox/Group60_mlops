@@ -28,19 +28,7 @@ def config():
 def model(config):
     # Temporarily open the config for modification
     with open_dict(config):
-        # Remove 'num_epochs' from the config
-        if "num_epochs" in config.train:
-            del config.train["num_epochs"]
-
-        if "print_every" in config.train:
-            del config.train["print_every"]
-
-        if "seed" in config.train:
-            del config.train["seed"]
-
-        if "device" in config.train:
-            del config.train["device"]
-
+        # Remove 'data_root' from the config
         if "data_root" in config.model:
             del config.model["data_root"]
 
