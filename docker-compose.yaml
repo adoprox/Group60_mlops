@@ -1,7 +1,7 @@
 version: "3"
 services:
   trainer:
-    image: trainer:latest
+    image: group60_trainer:latest
     build:
       context: .
       dockerfile: dockerfiles/train_model.dockerfile

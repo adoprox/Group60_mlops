@@ -1,10 +1,10 @@
 import torch
 import pytorch_lightning as pl
-
+import os
 import wandb
 from pytorch_lightning.loggers import WandbLogger
 from omegaconf import OmegaConf
-
+from pytorch_lightning.callbacks import ModelCheckpoint
 from models.model import ToxicCommentClassifier
 
 # for managin hyperparameters
@@ -17,12 +17,12 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def train(config):
-    # Initialize TensorBoard and wandb logger
-    logger = pl.loggers.TensorBoardLogger("./models", name="bert_toxic_classifier_logs")
-    wandb_logger = WandbLogger(log_model="all", project="bert_toxic_classifier")
+    # Initialize TensorBoard and wandb logger with specific save directory
+    logger = pl.loggers.TensorBoardLogger(save_dir="./outputs/tensorboard_logs/", name="bert_toxic_classifier_logs")
+    wandb_logger = WandbLogger(save_dir="./outputs/wandb_logs/", log_model="all", project="bert_toxic_classifier")
 
     # log training device
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    # device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     wandb.log({"device": str(device)})
 
     wandb.log({"configuration": OmegaConf.to_yaml(config)})
@@ -30,12 +30,26 @@ def train(config):
     # Set seed
     torch.manual_seed(config.train.seed)
 
+    # Define the checkpoint callback
+    checkpoint_callback = ModelCheckpoint(
+        dirpath="./models/bert-toxic-classifier/",
+        filename="{epoch}-{val_loss:.2f}",
+        save_top_k=3,
+        verbose=True,
+        monitor="val_loss",
+        mode="min",
+    )
+
     # Define Lightning Trainer
     trainer = pl.Trainer(
         logger=wandb_logger,
+        callbacks=[checkpoint_callback],
         accelerator=config.train.device,
         max_epochs=config.train.num_epochs,
         log_every_n_steps=config.train.print_every,
+        # limit_train_batches=0.02,
+        # limit_val_batches=0.1,
+        # limit_test_batches=0.1
     )
 
     # Create instance of your LightningModule
@@ -59,5 +73,9 @@ def train(config):
 
 
 if __name__ == "__main__":
-    wandb.init(project="bert_toxic_classifier")
+    wandb_dir = "outputs/wandb_logs/"  # need to create the folder beforehand
+    os.environ["WANDB_DIR"] = wandb_dir
+
+    # Initialize wandb
+    wandb.init(project="bert_toxic_classifier", dir=wandb_dir)
     train()
