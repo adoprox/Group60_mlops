@@ -50,14 +50,14 @@ def tokenize_and_encode(tokenizer, comments):
 
 def predict(inputs, config):
     # define the device to use
-    device = config.hyperparameters.device
-    checkpoint_path = config.checkpoint_path
+    device = config.train.device
+    checkpoint_path = config.predict.checkpoint_path
 
     # load the model
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
 
     # compute the ids and attention_mask for the model
-    bert_model_name = config.hyperparameters.bert_model_name
+    bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
 
     input_ids = []
@@ -82,7 +82,7 @@ def predict(inputs, config):
     return predicted
 
 
-@hydra.main(version_base="1.3", config_name="config_predict.yaml", config_path="")
+@hydra.main(version_base="1.3", config_name="config_train.yaml", config_path="")
 def predict_user_input(config):
     # Compute prediction
     user_input = [config.text]
@@ -94,7 +94,7 @@ def predict_user_input(config):
     r_df.to_csv("outputs/predictions.csv")
 
 
-@hydra.main(version_base="1.3", config_name="config_predict.yaml", config_path="")
+@hydra.main(version_base="1.3", config_name="config_train.yaml", config_path="")
 def predict_file_input(config):
     # Load data
     file_input = pd.read_csv(config.file)

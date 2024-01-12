@@ -28,24 +28,24 @@ def train(config):
     wandb.log({"configuration": OmegaConf.to_yaml(config)})
 
     # Set seed
-    torch.manual_seed(config.hyperparameters.seed)
+    torch.manual_seed(config.train.seed)
 
     # Define Lightning Trainer
     trainer = pl.Trainer(
         logger=wandb_logger,
-        accelerator=config.hyperparameters.device,
-        max_epochs=config.hyperparameters.num_epochs,
-        log_every_n_steps=config.hyperparameters.print_every,
+        accelerator=config.train.device,
+        max_epochs=config.train.num_epochs,
+        log_every_n_steps=config.train.print_every,
     )
 
     # Create instance of your LightningModule
     model = ToxicCommentClassifier(
-        batch_size=config.hyperparameters.batch_size,
-        lr=config.hyperparameters.lr,
-        bert_model_name=config.hyperparameters.bert_model_name,
-        use_short_data=config.hyperparameters.use_short_data,
-        num_workers=config.hyperparameters.num_workers,
-        data_root=config.hyperparameters.data_root,
+        batch_size=config.model.batch_size,
+        lr=config.model.lr,
+        bert_model_name=config.model.bert_model_name,
+        use_short_data=config.model.use_short_data,
+        num_workers=config.model.num_workers,
+        data_root=config.model.data_root,
     )  # Use small dataset to speed up training
 
     wandb.watch(model, log_freq=100)
