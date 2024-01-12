@@ -40,3 +40,9 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: Changes from ruff autoformatting
+
+    - name: Test with pytest
+      run: |
+          pip install -r requirements_tests.txt
+          pytest tests/test_data.py
+          pytest tests/test_model.py 
