@@ -18,8 +18,7 @@ jobs:
           python -m pip install dvc 
           python -m pip install dvc-gdrive
           dvc init --no-scm
-          dvc remote default storage
-          dvc add remote default
+          dvc add remote add -d gdrive://1hTJ0wghBp-5BabYJq3Cg9kUj2rdoEhIe
           dvc pull --run-cache
           pip install -r requirements_tests.txt
           pytest tests/test_model.py 
