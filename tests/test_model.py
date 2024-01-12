@@ -77,8 +77,8 @@ def test_model_save_load(model, tmp_path):
     assert model_loaded is not None, "Failed to load the saved model"
 
 
-# test impossible to run due to memory consumption of having model on 
-    # both CPU and GPU.
+# test impossible to run due to memory consumption of having model on
+# both CPU and GPU.
 
 # @pytest.mark.skipif(not cuda_available, reason="CUDA is not available")
 # def test_predictions_cuda_consistency(model, test_loader):
