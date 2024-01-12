@@ -111,6 +111,10 @@ IMPORTANT: to add GPU support to a container, add the flag `--gpus all` to above
 
 `docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all group60_trainer:latest python3 ./toxic_comments/train_model.py`
 
+##### Command for running in cloud:
+
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all gcr.io/propane-facet-410709/bert-toxic-trainer:latest python3 ./toxic_comments/train_model.py`
+
 ## Gcloud setup
 The following section contains documentation and rules for how to interact with the cloud setup.
 
