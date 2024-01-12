@@ -40,6 +40,10 @@ def model(config):
 
         if "device" in config.hyperparameters:
             del config.hyperparameters["device"]
+
+        if "data_root" in config.hyperparameters:
+            del config.hyperparameters["data_root"]
+            
     # Initialize model with modified hyperparameters
     return ToxicCommentClassifier(**config.hyperparameters)
 
