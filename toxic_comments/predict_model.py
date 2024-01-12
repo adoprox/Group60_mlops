@@ -82,7 +82,7 @@ def predict(inputs, config):
     return predicted
 
 
-@hydra.main(version_base="1.3", config_name="config_train.yaml", config_path="")
+@hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_user_input(config):
     # Compute prediction
     user_input = [config.text]
@@ -94,7 +94,7 @@ def predict_user_input(config):
     r_df.to_csv("outputs/predictions.csv")
 
 
-@hydra.main(version_base="1.3", config_name="config_train.yaml", config_path="")
+@hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
     # Load data
     file_input = pd.read_csv(config.file)

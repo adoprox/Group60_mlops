@@ -18,8 +18,8 @@ cuda_available = torch.cuda.is_available()
 @pytest.mark.skipif(not os.path.exists(_PROJECT_ROOT + "/toxic_comments"), reason="Config files not found")
 @pytest.fixture(scope="module")
 def config():
-    with initialize("../toxic_comments/"):
-        cfg = compose(config_name="config_train.yaml")
+    with initialize("../toxic_comments/models/config"):
+        cfg = compose(config_name="default.yaml")
 
     return cfg
 
