@@ -17,7 +17,7 @@ jobs:
       run: |
           python -m pip install dvc 
           python -m pip install dvc-gdrive
-          dvc init
+          dvc init --no-scm
           dvc pull --run-cache
           pip install -r requirements_tests.txt
           pytest tests/test_model.py 
