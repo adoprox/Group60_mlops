@@ -15,9 +15,50 @@ jobs:
       # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
       contents: write
 
+
+      - uses: actions/checkout@v4
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        #restore-keys: |
+        #  ${{ runner.os }}-build-${{ env.cache-name }}-
+        #  ${{ runner.os }}-build-
+        #  ${{ runner.os }}-
+
+    - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      name: List the state of node modules
+      continue-on-error: true
+      run: npm list
 
     - name: Set up Python 3.11.5
       uses: actions/setup-python@v5
@@ -28,8 +69,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements_dev.txt
-        pip install -r requirements.txt
+        npm install -r requirements_dev.txt
+        npm install -r requirements.txt
 
     - name: Run ruff check
       run: |
@@ -46,5 +87,5 @@ jobs:
 
     - name: Test with pytest
       run: |
-          pip install -r requirements_tests.txt
+          npm install -r requirements_tests.txt
           pytest tests/test_model.py 
