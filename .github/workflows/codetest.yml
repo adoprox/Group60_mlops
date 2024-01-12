@@ -15,8 +15,6 @@ jobs:
 
     - name: Test with pytest
       run: |
-          pip install dvc 
-          pip install 
-          dvc pull --run-cache
           pip install -r requirements_tests.txt
+          dvc pull --run-cache
           pytest tests/test_model.py 
