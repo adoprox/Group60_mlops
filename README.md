@@ -116,4 +116,5 @@ The prediction script can classify a comment or a list of comments given as inpu
   
 You can also specify the model to use by adding the parameter:
 "++predict.checkpoint_path=path_model"
+
 _n.b. The '=' is a special character, if it is present in the path, it needs to be preceded by the special character '\'_
