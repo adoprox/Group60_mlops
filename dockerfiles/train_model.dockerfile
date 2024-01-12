@@ -13,10 +13,6 @@ COPY requirements.txt requirements.txt
 COPY Makefile/ Makefile/
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
-COPY .dvc/config .dvc/config
-COPY models.dvc models.dvc
-COPY data.dvc data.dvc
-#COPY data/ data/
 
 RUN pip install -r requirements.txt --no-cache-dir
 #Add commands to work with gcp
