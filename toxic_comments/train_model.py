@@ -77,7 +77,7 @@ if __name__ == "__main__":
     wandb_path = pathlib.Path("outputs/wandb_logs/")
     wandb_path.mkdir(exist_ok=True, parents=True)
     wandb_dir = str(wandb_path.absolute())
-    
+
     os.environ["WANDB_DIR"] = wandb_dir
 
     # Initialize wandb
