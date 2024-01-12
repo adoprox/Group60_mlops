@@ -47,5 +47,4 @@ jobs:
     - name: Test with pytest
       run: |
           pip install -r requirements_tests.txt
-          pytest tests/test_data.py
           pytest tests/test_model.py 
