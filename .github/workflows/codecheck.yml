@@ -46,8 +46,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        npm install -r requirements_dev.txt
-        npm install -r requirements.txt
+        pip install -r requirements_dev.txt
+        pip install -r requirements.txt
 
     - name: Run ruff check
       run: |
@@ -64,5 +64,5 @@ jobs:
 
     - name: Test with pytest
       run: |
-          npm install -r requirements_tests.txt
+          pip install -r requirements_tests.txt
           pytest tests/test_model.py 
