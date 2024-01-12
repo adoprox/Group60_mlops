@@ -48,9 +48,9 @@ def train(config):
         accelerator=config.train.device,
         max_epochs=config.train.num_epochs,
         log_every_n_steps=config.train.print_every,
-        limit_train_batches=0.02,  
-        limit_val_batches=0.1,    
-        limit_test_batches=0.1 
+        #limit_train_batches=0.02,  
+        #limit_val_batches=0.1,    
+        #limit_test_batches=0.1 
     )
 
     # Create instance of your LightningModule
