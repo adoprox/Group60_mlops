@@ -6,6 +6,7 @@ from pytorch_lightning.loggers import WandbLogger
 from omegaconf import OmegaConf
 from pytorch_lightning.callbacks import ModelCheckpoint
 from models.model import ToxicCommentClassifier
+import pathlib
 
 # for managin hyperparameters
 import hydra
@@ -73,7 +74,10 @@ def train(config):
 
 
 if __name__ == "__main__":
-    wandb_dir = "outputs/wandb_logs/"  # need to create the folder beforehand
+    wandb_path = pathlib.Path("outputs/wandb_logs/")
+    wandb_path.mkdir(exist_ok=True, parents=True)
+    wandb_dir = str(wandb_path.absolute())
+    
     os.environ["WANDB_DIR"] = wandb_dir
 
     # Initialize wandb
