@@ -108,3 +108,11 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
+
+## Predict
+The prediction script can classify a comment or a list of comments given as input:
+- **List of string:** python toxic_comments/predict_model.py +file=<file_name>.csv
+- **One string:** python toxic_comments/predict_model.py +text="comment to classify"
+You can also specify the model to use by adding the parameter:
+"++predict.checkpoint_path=path_model"
+_n.b. The '=' is a special character, if it is present in the path, it needs to be preceded by the special character '\'_
