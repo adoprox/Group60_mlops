@@ -142,7 +142,7 @@ Alternatively, the model can also be trained within a container. For that:
 3. Install gcloud, gsutil, etc. 
 4. Copy training data from cloud storage to container: `gsutil rsync -r gs://group_60_data/data ./data`. This command will copy the data stored in the bucket to the local data directory (assuming current directoy is the project root)
 5. Run the container with above command.
-6. wandb should automatically upload the model checkpoints. But they can also be uploaded using: `gsutil rsync -r ./local/path/to/models gs://group_60_data/models`
+6. wandb should automatically upload the model checkpoints. But they can also be uploaded using: `gsutil rsync -r ./local/path/to/models gs://group_60_models`
 
 ## Predict
 The prediction script can classify a comment or a list of comments given as input:
