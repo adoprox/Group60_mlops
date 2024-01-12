@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', './dockerfiles/train_model.dockerfile', '-t', 'gcr.io/propane-facet-410709/bert-toxic-trainer', '.', '--no-cache']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/propane-facet-410709/bert-toxic-trainer']

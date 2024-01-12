@@ -7,12 +7,17 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 import wandb
 
 
-PATH_TO_DATA = "./data/processed/"
-
-
 # Define a pytorch ligtning module
 class ToxicCommentClassifier(pl.LightningModule):
-    def __init__(self, batch_size=32, lr=2e-5, bert_model_name="bert-base-uncased", use_short_data=None, num_workers=0):
+    def __init__(
+        self,
+        batch_size=32,
+        lr=2e-5,
+        bert_model_name="bert-base-uncased",
+        use_short_data=None,
+        num_workers=0,
+        data_root=None,
+    ):
         super().__init__()
 
         self.save_hyperparameters()
@@ -20,6 +25,7 @@ class ToxicCommentClassifier(pl.LightningModule):
         self.lr = lr
         self.use_short_data = use_short_data
         self.num_workers = num_workers
+        self.data_root = data_root
 
         # Model Initialization
         self.model = BertForSequenceClassification.from_pretrained(bert_model_name, num_labels=6)
@@ -81,21 +87,21 @@ class ToxicCommentClassifier(pl.LightningModule):
         return torch.optim.AdamW(self.parameters(), lr=self.lr)
 
     def train_dataloader(self):
-        train_dataset = torch.load(PATH_TO_DATA + "train.pt")
+        train_dataset = torch.load(self.data_root + "train.pt")
         if self.use_short_data is not None:
             train_indx = list(range(self.use_short_data))
             train_dataset = Subset(train_dataset, train_indx)
         return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers)
 
     def val_dataloader(self):
-        val_dataset = torch.load(PATH_TO_DATA + "val.pt")
+        val_dataset = torch.load(self.data_root + "val.pt")
         if self.use_short_data is not None:
             val_indx = list(range(int(self.use_short_data / 10)))
             val_dataset = Subset(val_dataset, val_indx)
         return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_workers)
 
     def test_dataloader(self):
-        val_dataset = torch.load(PATH_TO_DATA + "test.pt")
+        val_dataset = torch.load(self.data_root + "test.pt")
         if self.use_short_data is not None:
             val_indx = list(range(int(self.use_short_data / 10)))
             val_dataset = Subset(val_dataset, val_indx)

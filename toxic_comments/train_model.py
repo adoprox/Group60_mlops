@@ -45,6 +45,7 @@ def train(config):
         bert_model_name=config.hyperparameters.bert_model_name,
         use_short_data=config.hyperparameters.use_short_data,
         num_workers=config.hyperparameters.num_workers,
+        data_root=config.hyperparameters.data_root,
     )  # Use small dataset to speed up training
 
     wandb.watch(model, log_freq=100)
