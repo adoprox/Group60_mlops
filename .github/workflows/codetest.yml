@@ -16,11 +16,11 @@ jobs:
     - name: Test with pytest
       run: |
           python -m pip install dvc 
-          python -m pip install dvc-gdrive
+          python -m pip install dvc-gs
           python -m pip install --upgrade pyOpenSSL
           dvc init --no-scm
-          dvc remote add storage gdrive://1hTJ0wghBp-5BabYJq3Cg9kUj2rdoEhIe
-          dvc remote default storage
+          dvc remote add gcloud-storage gs://group_60_data/
+          dvc remote default gcloud-storage
           dvc pull --run-cache
           pip install -r requirements_tests.txt
           pytest tests/test_model.py 
