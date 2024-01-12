@@ -9,7 +9,15 @@ import wandb
 
 # Define a pytorch ligtning module
 class ToxicCommentClassifier(pl.LightningModule):
-    def __init__(self, batch_size=32, lr=2e-5, bert_model_name="bert-base-uncased", use_short_data=None, num_workers=0, data_root=None):
+    def __init__(
+        self,
+        batch_size=32,
+        lr=2e-5,
+        bert_model_name="bert-base-uncased",
+        use_short_data=None,
+        num_workers=0,
+        data_root=None,
+    ):
         super().__init__()
 
         self.save_hyperparameters()
