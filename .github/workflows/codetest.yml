@@ -1,0 +1,20 @@
+name: "Run codechecks"
+
+on:
+  push:
+    branches: [ CI ]
+
+jobs:
+  Codecheck:
+
+    runs-on: [ubuntu-latest]
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
+    steps:
+
+    - name: Test with pytest
+      run: |
+          dvc pull --run-cache
+          pip install -r requirements_tests.txt
+          pytest tests/test_model.py 
