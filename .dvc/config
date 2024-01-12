@@ -2,3 +2,6 @@
     remote = storage
 ['remote "storage"']
     url = gdrive://1hTJ0wghBp-5BabYJq3Cg9kUj2rdoEhIe
+['remote "gcloud-storage"']
+    url = gs://group_60_data/
+    version_aware = true

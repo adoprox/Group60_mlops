@@ -1,6 +1,60 @@
 outs:
-- md5: eb3320b0e20d7592d715f96fd5f32ca3.dir
-  size: 207661193
-  nfiles: 8
-  hash: md5
+- hash: md5
   path: data
+  files:
+  - relpath: .DS_Store
+    md5: 37708bf6a29ed4146bf16d3906549562
+    size: 6148
+    cloud:
+      gcloud-storage:
+        etag: 08b7e4b0a8ffd783031001
+        version_id: '1705067473023543'
+  - relpath: processed/test.pt
+    md5: 4ee61866035bfad571b25925d5e6f4be
+    size: 8405567
+    cloud:
+      gcloud-storage:
+        etag: 08fc87c8abffd783031001
+        version_id: '1705067479696380'
+  - relpath: processed/train.pt
+    md5: 0df0d10180da2f87f920d61a689cc0b4
+    size: 50427846
+    cloud:
+      gcloud-storage:
+        etag: 08c7c4c1b2ffd783031001
+        version_id: '1705067494269511'
+  - relpath: processed/val.pt
+    md5: 542f9670882f958d234d1481f1998cd0
+    size: 8407672
+    cloud:
+      gcloud-storage:
+        etag: 0895c2d6abffd783031001
+        version_id: '1705067479933205'
+  - relpath: raw/sample_submission.csv
+    md5: 2af5ed06d19b00c13c0573b474edb165
+    size: 6279782
+    cloud:
+      gcloud-storage:
+        etag: 08b2dcd7abffd783031001
+        version_id: '1705067479952946'
+  - relpath: raw/test.csv
+    md5: 210c1a02235f97633212e29896640db7
+    size: 60354593
+    cloud:
+      gcloud-storage:
+        etag: 08eef6e0b2ffd783031001
+        version_id: '1705067494783854'
+  - relpath: raw/test_labels.csv
+    md5: c23029ecede85b3adfbc2527e7812b84
+    size: 4976930
+    cloud:
+      gcloud-storage:
+        etag: 08c3f49fa9ffd783031001
+        version_id: '1705067474844227'
+  - relpath: raw/train.csv
+    md5: 791e42335500c447273a7dc85f58239e
+    size: 68802655
+    cloud:
+      gcloud-storage:
+        etag: 08f58a92b6ffd783031001
+        version_id: '1705067501880693'
