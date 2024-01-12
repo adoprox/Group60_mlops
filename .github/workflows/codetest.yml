@@ -1,4 +1,4 @@
-name: "Run codechecks"
+name: "Run codeTest"
 
 on:
   push:
@@ -15,6 +15,8 @@ jobs:
 
     - name: Test with pytest
       run: |
+          pip install dvc 
+          pip install 
           dvc pull --run-cache
           pip install -r requirements_tests.txt
           pytest tests/test_model.py 
