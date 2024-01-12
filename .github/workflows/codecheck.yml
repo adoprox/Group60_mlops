@@ -3,9 +3,6 @@ name: "Run codechecks"
 on:
   pull_request:
     branches: [ master, main ]
-  push:
-    branches: [ CI ]
-
 
 jobs:
   Codecheck:
