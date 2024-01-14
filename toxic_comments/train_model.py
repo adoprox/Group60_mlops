@@ -67,6 +67,12 @@ def train(config):
 
     # Train the model
     trainer.fit(model)
+
+    # Save fine-tuned model and tokenizer after training
+    tuned_model = "./serving/"
+    model.save_pretrained(tuned_model)
+    model.tokenizer.save_pretrained(tuned_model)
+    
     # save logged data
     logger.save()
     # Test the model
