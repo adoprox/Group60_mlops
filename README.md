@@ -81,6 +81,19 @@ git clone https://github.com/adoprox/Group60_mlops.git
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
 
+#### Known issues
+
+#### DVC fails to pull
+
+If you get this error:
+
+    ```
+    ERROR: failed to pull data from the cloud - Checkout failed for following targets: models
+    I your cache up to date?
+    ```
+
+The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
+
 ## Docker containers
 
 ### Commands to build docker containers
@@ -91,11 +104,16 @@ Predict is still under work
 ### Commands to run docker containers
 The docker containers are set up without an entrypoint. The data root folder is in the configuration, the default is set to ./data/processed.
 
-#### Running locally with default root data directory:
-`docker run -v ./data:/data -e WANDB_API_KEY='<your-api-key>' group60_trainer:latest python3 ./toxic_comments/train_model.py`
+#### Running the training container:
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' group60_trainer:latest python3 ./toxic_comments/train_model.py`
 
-#### Running in cloud with GCS bucket as root data directory: 
-TODO
+IMPORTANT: to add GPU support to a container, add the flag `--gpus all` to above command, like so:
+
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all group60_trainer:latest python3 ./toxic_comments/train_model.py`
+
+##### Command for running in cloud:
+
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all gcr.io/propane-facet-410709/bert-toxic-trainer:latest python3 ./toxic_comments/train_model.py`
 
 ## Gcloud setup
 The following section contains documentation and rules for how to interact with the cloud setup.
@@ -108,6 +126,23 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
+
+## Training the model on a compute instance
+
+1. Create an instance with GPU, choose one of the Deep learning images. When starting the instance, make sure the nvidia drivers and cuda are installed correctly. Make sure the VM has access to all APIs.
+2. Clone the repository
+3. Run dvc pull, supply credentials
+4. Train model
+5. Run dvc add models/
+6. Run dvc push -r gcloud-drive
+
+Alternatively, the model can also be trained within a container. For that:
+1. Create an instance with GPU, choose one of the Deep learning images. When starting the instance, make sure the nvidia drivers and cuda are installed correctly. Make sure the
+2. Pull the container with: `docker pull gcr.io/propane-facet-410709/bert-toxic-trainer:latest`
+3. Install gcloud, gsutil, etc. 
+4. Copy training data from cloud storage to container: `gsutil rsync -r gs://group_60_data/data ./data`. This command will copy the data stored in the bucket to the local data directory (assuming current directoy is the project root)
+5. Run the container with above command.
+6. wandb should automatically upload the model checkpoints. But they can also be uploaded using: `gsutil rsync -r ./local/path/to/models gs://group_60_models`
 
 ## Predict
 The prediction script can classify a comment or a list of comments given as input:
