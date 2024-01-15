@@ -81,7 +81,7 @@ class ToxicCommentClassifier(pl.LightningModule):
         self.log("test_precision", precision, on_epoch=True, prog_bar=True)
         self.log("test_recall", recall, on_epoch=True, prog_bar=True)
 
-        f1 = f1_score(true_labels, predicted_labels, average='micro')
+        f1 = f1_score(true_labels, predicted_labels, average="micro")
 
         wandb.log({"validation_loss": f1})
 
