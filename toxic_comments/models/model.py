@@ -3,7 +3,7 @@ import numpy as np
 import pytorch_lightning as pl
 from transformers import BertForSequenceClassification, BertTokenizer
 from torch.utils.data import DataLoader, Subset
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import wandb
 
 
@@ -80,6 +80,10 @@ class ToxicCommentClassifier(pl.LightningModule):
         self.log("test_accuracy", accuracy, on_epoch=True, prog_bar=True)
         self.log("test_precision", precision, on_epoch=True, prog_bar=True)
         self.log("test_recall", recall, on_epoch=True, prog_bar=True)
+
+        f1 = f1_score(true_labels, predicted_labels, average='micro')
+
+        wandb.log({"validation_loss": f1})
 
         return accuracy, precision, recall
 

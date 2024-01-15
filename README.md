@@ -94,6 +94,18 @@ If you get this error:
 
 The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
 
+## Wandb sweeps
+
+1. To set custom logging directory, set this environment variable before running the sweep: 
+`export WANDB_DIR=./outputs/wandb_logs/`
+
+2. Create a new sweep using: 
+`wandb sweep ./toxic_comments/models/config/sweep.yaml`
+
+3. Run the sweep with the command that gets output after you create the sweep
+
+> Note: when you update the sweep.yaml you will need to create a new sweep to use the updated configuration file. If you reuse the old sweep, it will also reuse the old configuration file!
+
 ## Docker containers
 
 ### Commands to build docker containers

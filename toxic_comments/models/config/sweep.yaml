@@ -1,0 +1,16 @@
+program: ./toxic_comments/train_model.py
+method: bayes
+metric:
+  name: validation_loss
+  goal: minimize
+parameters:
+  model.lr:
+    min: 0.00001
+    max: 0.01
+  model.batch_size:
+    min: 5
+    max: 25
+command:
+  - python
+  - ${program}
+  - ${args_no_hyphens}
