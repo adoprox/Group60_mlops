@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
-from models.model import ToxicCommentClassifier
+from toxic_comments.models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -67,7 +67,8 @@ def predict(inputs, config):
         list: List of predicted probabilities for each class.
     """
     # define the device to use
-    device = config.train.device
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
     checkpoint_path = config.predict.checkpoint_path
 
     # load the model

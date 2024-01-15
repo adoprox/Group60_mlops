@@ -13,7 +13,7 @@ train:
   device : "auto" # set to gpu if you want to use any gpu
 
 predict:
-  checkpoint_path: models/bert_toxic_classifier_logs/version_16/checkpoints/epoch=0-step=125.ckpt
+  checkpoint_path: models/production/deploy.ckpt
 
 # In config_train.yaml
 hydra:

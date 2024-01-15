@@ -111,6 +111,7 @@ The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
 ### Commands to build docker containers
 1. Training container: `docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest`
 2. Prediction container: `docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest`
+3. Inference container: `docker build -f dockerfiles/inference_streamlit.dockerfile . -t inference:latest`
 Predict is still under work
 
 ### Commands to run docker containers
