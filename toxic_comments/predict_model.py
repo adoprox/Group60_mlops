@@ -54,7 +54,7 @@ def predict(inputs, config):
     checkpoint_path = config.predict.checkpoint_path
 
     # load the model
-    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
+    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)  #using in-built function to recall checkpoint 
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name

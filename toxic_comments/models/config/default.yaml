@@ -1,19 +1,19 @@
 model:
   bert_model_name : 'bert-base-uncased'
   lr : 2e-5
-  batch_size : 10
+  batch_size : 32
   data_root : "./data/processed/"
-  num_workers : 4
-  use_short_data : null # None if we should use the whole data
+  num_workers : 8
+  use_short_data : 1000 # None if we should use the whole data
 
 train:
-  num_epochs : 1
+  num_epochs : 3
   print_every : 7
   seed : 42
-  device : "auto" # set to gpu if you want to use any gpu
+  device : "cpu" # set to gpu if you want to use any gpu
 
 predict:
-  checkpoint_path: models/bert_toxic_classifier_logs/version_16/checkpoints/epoch=0-step=125.ckpt
+  checkpoint_path: models/bert-toxic-classifier/models_bert-toxic-classifier_epoch=1-val_loss=0.15.ckpt
 
 # In config_train.yaml
 hydra:
