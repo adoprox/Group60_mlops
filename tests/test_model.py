@@ -18,6 +18,7 @@ cuda_available = torch.cuda.is_available()
 @pytest.mark.skipif(not os.path.exists(_PROJECT_ROOT + "/toxic_comments"), reason="Config files not found")
 @pytest.fixture(scope="module")
 def config():
+    """Fixture for loading the configuration."""
     with initialize("../toxic_comments/models/config"):
         cfg = compose(config_name="default.yaml")
 
@@ -26,6 +27,7 @@ def config():
 
 @pytest.fixture(scope="module")
 def model(config):
+    """Fixture for creating an instance of the model."""
     # Temporarily open the config for modification
     with open_dict(config):
         # Remove 'data_root' from the config
@@ -38,12 +40,14 @@ def model(config):
 
 @pytest.fixture(scope="module")
 def test_loader():
+    """Fixture for loading the test data."""
     # Load test data
     test_dataset = torch.load(PATH_TO_DATA + "test.pt")
     return DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 
 def test_model_output_shape(model, test_loader):
+    """Test if the model produces the expected output shape."""
     input_ids, attention_masks, labels = next(iter(test_loader))
     outputs = model(input_ids, attention_masks)
     assert outputs.logits.shape == (
@@ -53,6 +57,7 @@ def test_model_output_shape(model, test_loader):
 
 
 def test_model_label_prediction(model, test_loader):
+    """Test if the predicted labels are binary (0 or 1) for each class."""
     input_ids, attention_masks, labels = next(iter(test_loader))
     outputs = model(input_ids, attention_masks)
     predicted_probs = torch.sigmoid(outputs.logits)
@@ -64,12 +69,14 @@ def test_model_label_prediction(model, test_loader):
 
 
 def test_loss_calculation(model, test_loader):
+    """Test if the model calculates the loss."""
     input_ids, attention_masks, labels = next(iter(test_loader))
     outputs = model(input_ids, attention_masks, labels)
     assert outputs.loss is not None, "Model did not calculate loss"
 
 
 def test_model_save_load(model, tmp_path):
+    """Test if the model can be successfully saved and loaded."""
     save_path = tmp_path / "model.pt"
     torch.save(model.state_dict(), save_path)
     model_loaded = ToxicCommentClassifier()
@@ -92,6 +99,7 @@ def test_model_save_load(model, tmp_path):
 
 
 def test_gradient_flow(model, test_loader):
+    """Test if gradients are being computed, not vanishing, and not exploding."""
     input_ids, attention_masks, labels = next(iter(test_loader))
     model = model.to("cpu")
     outputs = model(input_ids, attention_masks, labels)
