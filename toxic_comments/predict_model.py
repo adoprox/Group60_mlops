@@ -11,7 +11,15 @@ import numpy as np
 
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments):
-    """Return  tokenized inputs, attention masks as PyTorch tensors."""
+    """Tokenize and encode comments using the BERT tokenizer.
+
+    Args:
+        tokenizer (BertTokenizer): BERT tokenizer.
+        comments (list): List of comments.
+
+    Returns:
+        torch.Tensor, torch.Tensor: Tokenized input IDs and attention masks.
+    """
 
     # Initialize empty lists to store tokenized inputs and attention masks
     input_ids = []
@@ -49,6 +57,15 @@ def tokenize_and_encode(tokenizer, comments):
 
 
 def predict(inputs, config):
+    """Make predictions using the trained model.
+
+    Args:
+        inputs (list): List of comments to predict.
+        config (OmegaConf): Hydra configuration.
+
+    Returns:
+        list: List of predicted probabilities for each class.
+    """
     # define the device to use
     device = config.train.device
     checkpoint_path = config.predict.checkpoint_path
@@ -84,6 +101,8 @@ def predict(inputs, config):
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_user_input(config):
+    """Predict user input and save the results to a CSV file."""
+
     # Compute prediction
     user_input = [config.text]
     result = predict(user_input, config)
@@ -96,6 +115,9 @@ def predict_user_input(config):
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
+    """Predict input from a file and save the results to a CSV file."""
+
+
     # Load data
     file_input = pd.read_csv(config.file)
 
