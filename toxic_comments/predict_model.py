@@ -127,7 +127,7 @@ def predict_file_input(config):
 
 
 def load_model(config):
-    """Loads tokenozer, model and sets device to use"""
+    """Loads tokenizer, model and sets device to use"""
     # define the device to use
     device_setting = config.train.device
     if device_setting == "auto":
