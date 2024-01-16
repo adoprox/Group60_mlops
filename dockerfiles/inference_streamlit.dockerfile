@@ -10,10 +10,12 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
-COPY models/production/deploy.ckpt models/deploy.ckpt
+COPY models/production/deploy.ckpt models/production/deploy.ckpt
 
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
+
+ENV PYTHONPATH "${PYTHONPATH}:/toxic_comments/models"
 
 EXPOSE 8501/tcp
 
