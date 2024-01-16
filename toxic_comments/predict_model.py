@@ -38,7 +38,7 @@ def tokenize_and_encode(tokenizer, comments):
             add_special_tokens=True,
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
-            padding='longest',
+            padding="longest",
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
@@ -125,6 +125,7 @@ def predict_file_input(config):
     r_df = pd.DataFrame(np.concatenate(results), columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
+
 def load_model(config):
     """Loads tokenozer, model and sets device to use"""
     # define the device to use
@@ -146,6 +147,7 @@ def load_model(config):
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
 
     return tokenizer, model, device
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
