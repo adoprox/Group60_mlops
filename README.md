@@ -111,6 +111,7 @@ The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
 ### Commands to build docker containers
 1. Training container: `docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest`
 2. Prediction container: `docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest`
+3. Inference container: `docker build -f dockerfiles/inference_streamlit.dockerfile . -t inference:latest`
 Predict is still under work
 
 ### Commands to run docker containers
@@ -138,6 +139,13 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
+
+### Creating inference instance
+
+The following command can be used to create a new inference service based on the latest version of the streamlit inference container:
+`gcloud run deploy inference-streamlit --image gcr.io/propane-facet-410709/inference-streamlit:latest --platform managed --region europe-west4 --allow-unauthenticated --port 8501`
+
+Additionally, a new instance will be deployed via a trigger whenever a push to main happens.
 
 ## Training the model on a compute instance
 

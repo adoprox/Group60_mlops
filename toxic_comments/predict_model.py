@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
-from models.model import ToxicCommentClassifier
+from toxic_comments.models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -38,7 +38,7 @@ def tokenize_and_encode(tokenizer, comments):
             add_special_tokens=True,
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
-            pad_to_max_length=True,
+            padding="longest",
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
@@ -56,7 +56,7 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
-def predict(inputs, config):
+def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
     Args:
@@ -66,24 +66,6 @@ def predict(inputs, config):
     Returns:
         list: List of predicted probabilities for each class.
     """
-    # Check the config file for the device setting
-    device_setting = config.train.device
-    if device_setting == "auto":
-        device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    elif device_setting == "gpu":
-        device = torch.device("cuda")
-    else:
-        device = torch.device("cpu")
-
-    checkpoint_path = config.predict.checkpoint_path
-
-    # load the model, use strict = False to work even if some parameters are missing
-    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
-
-    # compute the ids and attention_mask for the model
-    bert_model_name = config.model.bert_model_name
-    tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
-
     input_ids = []
     attention_masks = []
 
@@ -110,9 +92,14 @@ def predict(inputs, config):
 def predict_user_input(config):
     """Predict user input and save the results to a CSV file."""
 
-    # Compute prediction
+    # Get input
     user_input = [config.text]
-    result = predict(user_input, config)
+
+    # load model
+    tokenizer, model, device = load_model(config)
+
+    # Compute prediction
+    result = predict(user_input, tokenizer, model, device)
 
     # Save results
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
@@ -123,18 +110,43 @@ def predict_user_input(config):
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
     """Predict input from a file and save the results to a CSV file."""
-
     # Load data
     file_input = pd.read_csv(config.file)
 
+    # load model
+    tokenizer, model, device = load_model(config)
+
     # Compute predictions
-    results = predict(list(file_input["Comment"]), config)
+    results = predict(list(file_input["Comment"]), tokenizer, model, device)
 
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
 
     # save the result
     r_df = pd.DataFrame(np.concatenate(results), columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
+
+
+def load_model(config):
+    """Loads tokenizer, model and sets device to use"""
+    # define the device to use
+    device_setting = config.train.device
+    if device_setting == "auto":
+        device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    elif device_setting == "gpu":
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+
+    checkpoint_path = config.predict.checkpoint_path
+
+    # load the model, use strict = False to work even if some parameters are missing
+    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
+
+    # compute the ids and attention_mask for the model
+    bert_model_name = config.model.bert_model_name
+    tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
+
+    return tokenizer, model, device
 
 
 if __name__ == "__main__":

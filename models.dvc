@@ -10,23 +10,23 @@ outs:
         etag: 08d6f3b7a8ffd783031001
         version_id: '1705067473140182'
   - relpath: bert-toxic-classifier/epoch=0-val_loss=0.16.ckpt
-    md5: d8857d73b63d306bd463ae1d2b0d38da
+    md5: d010740a6d9286aa778d233c2ac6c7a2
     size: 1314098342
     cloud:
       gcloud-storage:
-        etag: 0890979fba91d883031001
-        version_id: '1705072342322064'
+        etag: 08e889ddbdd5df83031001
+        version_id: '1705331121407208'
   - relpath: bert-toxic-classifier/epoch=1-val_loss=0.15.ckpt
-    md5: c2cd6cabd4d3967ac2a159edbca91f70
+    md5: 147e77b07f448500894cbb98e50a520e
     size: 1314098660
     cloud:
       gcloud-storage:
-        etag: 088ac0d3bf91d883031001
-        version_id: '1705072353665034'
+        etag: 0899aa8bb7d5df83031001
+        version_id: '1705331107484953'
   - relpath: bert-toxic-classifier/epoch=2-val_loss=0.16.ckpt
-    md5: d2683d9f42e724d1225b94b21a0565d3
+    md5: 3b8c7a8c1d0d519ad7f83e5309fbbb73
     size: 1314098788
     cloud:
       gcloud-storage:
-        etag: 08effcb3bf91d883031001
-        version_id: '1705072353148527'
+        etag: 0896aae1ced4df83031001
+        version_id: '1705330888693014'
