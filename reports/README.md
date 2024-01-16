@@ -105,7 +105,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Group 60
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s220278, s232449, s233231, s222374, s233499
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +129,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Lastly, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. (TOO SHORT)
 
 ## Coding environment
 
@@ -147,8 +147,12 @@ end of the project.
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+We employed `pipreqs` for dependency management, automatically generating the list of dependencies and recording them in the `requirements.txt` file. To replicate our entire development environment, users should follow these steps:
 
---- question 4 fill here ---
+1. Run `make create_environment` to create a conda environment named after the project.
+2. Execute `make requirements` to install all the dependencies necessary to execute the code.
+3. Optionally, users can run `make dev_requirements` to acquire the all the Developer Python Dependencies if needed.
+4. To be able to run the unit tests on the code, it is also necessary to execute `make test_requirements`.
 
 ### Question 5
 
@@ -163,7 +167,8 @@ end of the project.
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
+Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository.
 
 ### Question 6
 
@@ -174,7 +179,7 @@ end of the project.
 >
 > Answer:
 
---- question 6 fill here ---
+We have opted to follow to the standard Pep8 guidelines for code implementation, with the exception that we manually set the maximum line length to 120 characters instead of the standard 79. To ensure code consistency and adherence to these guidelines, we have integrated ruff into our workflow. This tool automatically checks and applies any necessary formatting corrections to the code with each pull request made to the main branch. 
 
 ## Version control
 
