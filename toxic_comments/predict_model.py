@@ -126,6 +126,7 @@ def predict_file_input(config):
     r_df.to_csv("outputs/predictions.csv")
 
 def load_model(config):
+    """Loads tokenozer, model and sets device to use"""
     # define the device to use
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
