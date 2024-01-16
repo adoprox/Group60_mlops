@@ -140,6 +140,13 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
 
+### Creating inference instance
+
+The following command can be used to create a new inference service based on the latest version of the streamlit inference container:
+`gcloud run deploy inference-streamlit --image gcr.io/propane-facet-410709/inference-streamlit:latest --platform managed --region europe-west4 --allow-unauthenticated --port 8501`
+
+Additionally, a new instance will be deployed via a trigger whenever a push to main happens.
+
 ## Training the model on a compute instance
 
 1. Create an instance with GPU, choose one of the Deep learning images. When starting the instance, make sure the nvidia drivers and cuda are installed correctly. Make sure the VM has access to all APIs.
