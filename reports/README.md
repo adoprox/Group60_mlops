@@ -168,7 +168,7 @@ We employed `pipreqs` for dependency management, automatically generating the li
 > Answer:
 
 From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
-Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository.
+Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. (TO FIX)
 
 ### Question 6
 
@@ -198,7 +198,7 @@ We have opted to follow to the standard Pep8 guidelines for code implementation,
 >
 > Answer:
 
---- question 7 fill here ---
+In total, we have implemented 3 tests for the data loading part and 5 for the model. Regarding the data, we ensure that we load all the datapoints, check if the shape corresponds to the expected one, and verify the presence of all labels for the training data in the dataset. For the model, our tests include validating the correct shape of the output, ensuring the predicted values are binary, verifying the accurate computation of loss and gradients, and confirming that the model can be saved and loaded without encountering errors.
 
 ### Question 8
 
