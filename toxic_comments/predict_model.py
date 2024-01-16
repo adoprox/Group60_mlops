@@ -66,12 +66,19 @@ def predict(inputs, config):
     Returns:
         list: List of predicted probabilities for each class.
     """
-    # define the device to use
-    device = config.train.device
+    # Check the config file for the device setting
+    device_setting = config.train.device
+    if device_setting == "auto":
+        device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    elif device_setting == "gpu":
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+
     checkpoint_path = config.predict.checkpoint_path
 
-    # load the model
-    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
+    # load the model, use strict = False to work even if some parameters are missing
+    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
@@ -116,7 +123,6 @@ def predict_user_input(config):
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
     """Predict input from a file and save the results to a CSV file."""
-
 
     # Load data
     file_input = pd.read_csv(config.file)
