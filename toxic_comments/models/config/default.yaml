@@ -10,10 +10,10 @@ train:
   num_epochs : 1
   print_every : 7
   seed : 42
-  device : "auto" # set to gpu if you want to use any gpu
+  device : "auto" # set to "auto" for automatic selection, "gpu" to force gpu, "cpu" to force cpu
 
 predict:
-  checkpoint_path: models/production/production.ckpt
+  checkpoint_path: models/bert-toxic-classifier/epoch=1-val_loss=0.15.ckpt
 
 # In config_train.yaml
 hydra:

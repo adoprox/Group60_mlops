@@ -57,7 +57,7 @@ class ToxicCommentClassifier(pl.LightningModule):
             torch.Tensor: Model predictions.
         """
         return self.model(input_ids, attention_mask=attention_mask, labels=labels)
-    
+
     def training_step(self, batch, batch_idx):
         """
         Training step for the Lightning module.

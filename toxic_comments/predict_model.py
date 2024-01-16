@@ -128,12 +128,18 @@ def predict_file_input(config):
 def load_model(config):
     """Loads tokenozer, model and sets device to use"""
     # define the device to use
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    device_setting = config.train.device
+    if device_setting == "auto":
+        device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    elif device_setting == "gpu":
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
 
     checkpoint_path = config.predict.checkpoint_path
 
-    # load the model
-    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path)
+    # load the model, use strict = False to work even if some parameters are missing
+    model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
