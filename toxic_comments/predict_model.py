@@ -90,6 +90,8 @@ def predict_user_input(config):
 
     # Save results
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+    print(user_input)
+    print(result[0])
     r_df = pd.DataFrame(result[0], columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
