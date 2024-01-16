@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', 'gs://group_60_models/production.ckpt', './models/production']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', './dockerfiles/inference_streamlit.dockerfile', '-t', 'gcr.io/$PROJECT_ID/inference-streamlit', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/inference-streamlit']
