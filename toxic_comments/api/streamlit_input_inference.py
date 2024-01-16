@@ -8,7 +8,7 @@ from hydra import initialize, compose
 def load_config():
     """Decorator to cache loaded config. Avoids errors of hydra complaining about reinitialization."""
     with initialize("../models/config"):
-        return compose(config_name="default.yaml", overrides=["predict.checkpoint_path=models/production/deploy.ckpt"])
+        return compose(config_name="default.yaml", overrides=["predict.checkpoint_path=models/production/production.ckpt"])
 
 @st.cache_resource(hash_funcs={DictConfig: OmegaConf.to_container})  
 def load_model_decorator(config: DictConfig):

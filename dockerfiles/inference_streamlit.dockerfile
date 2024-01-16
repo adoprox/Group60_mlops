@@ -10,7 +10,7 @@ RUN apt update && \
 COPY requirements_inference.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
-COPY models/production/deploy.ckpt models/production/deploy.ckpt
+COPY models/production/production.ckpt models/production/production.ckpt
 
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir

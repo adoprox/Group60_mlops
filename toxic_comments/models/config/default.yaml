@@ -13,7 +13,7 @@ train:
   device : "auto" # set to gpu if you want to use any gpu
 
 predict:
-  checkpoint_path: models/production/deploy.ckpt
+  checkpoint_path: models/production/production.ckpt
 
 # In config_train.yaml
 hydra:
