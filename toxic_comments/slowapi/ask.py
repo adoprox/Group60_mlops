@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from toxic_comments.predict_model import predict_user_input, predict_file_input
+#from toxic_comments.predict_model import predict_user_input_hosting
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def upload():
     # Do something with the text and file, for example, print them
     print(f"Text Input: {text_input}")
     print(f"File Uploaded: {file.filename}")
-    predict_user_input(text_input)
+    predict_user_input_hosting(text_input)
 
     return "Form submitted successfully!"
 

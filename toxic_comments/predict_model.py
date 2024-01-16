@@ -95,6 +95,19 @@ def predict_user_input(config):
     r_df = pd.DataFrame(result[0], columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
+@hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
+def predict_user_input_hosting(config):
+    user_input = [config.text]
+    result = predict(user_input, config)
+    # Save results
+    labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+    print(user_input)
+    print(result[0])
+    r_df = pd.DataFrame(result[0], columns=labels_list)
+    r_df.to_csv("outputs/predictions.csv")
+    return r_df
+
+
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
