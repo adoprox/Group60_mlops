@@ -24,7 +24,7 @@ cfg = load_config()
 tokenizer, model, device = load_model_decorator(cfg)
 input = st.text_area(label="input")
 # Convert the input characters to a list of words
-#input = input.split()
+# input = input.split()
 input = [input]
 
 # def run_input_prediction():
@@ -32,4 +32,3 @@ input = [input]
 if st.button(label="Run inference"):
     output = predict(input, tokenizer, model, device)
     output
-    

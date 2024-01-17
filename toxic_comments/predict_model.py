@@ -57,7 +57,6 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
-
 def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
@@ -164,11 +163,11 @@ def load_model(config):
 
     # Construct the relative path to the 'train.pt' file
     base_path = Path(__file__).resolve().parent.parent
-    processed_data_path = base_path / 'data' / 'processed' / 'train.pt'
+    processed_data_path = base_path / "data" / "processed" / "train.pt"
 
     # Load the tensor data from the file
     train_dataset = torch.load(processed_data_path)
-    #qconfig = get_default_qconfig('fbgemm')
+    # qconfig = get_default_qconfig('fbgemm')
     float_qparams_weight_only_qconfig = torch.quantization.float_qparams_weight_only_qconfig
 
     def set_embedding_qconfig(model):
@@ -178,12 +177,12 @@ def load_model(config):
 
     # Prepare and calibrate the model with the calibration dataset
     torch.quantization.prepare(model, inplace=True)
-    
+
     calibration_dataloader = create_calibration_dataloader(
-        dataset=train_dataset, # Replace with your dataset variable
+        dataset=train_dataset,  # Replace with your dataset variable
         calibration_split=0.001,
         batch_size=32,
-        num_workers=0
+        num_workers=0,
     )
     calibrate_model(model, calibration_dataloader)
     set_embedding_qconfig(model)
@@ -194,13 +193,14 @@ def load_model(config):
 
     return tokenizer, model_quantized, device
 
+
 def calibrate_model(model, data_loader):
     model.eval()
     with torch.no_grad():
         for batch in data_loader:
             input_ids, attention_mask = batch
             # Pass both input_ids and attention_mask to the model
-            model(input_ids, attention_mask= attention_mask)
+            model(input_ids, attention_mask=attention_mask)
 
 
 def create_calibration_dataloader(dataset, calibration_split=0.1, batch_size=32, num_workers=0):
@@ -209,17 +209,12 @@ def create_calibration_dataloader(dataset, calibration_split=0.1, batch_size=32,
     calibration_dataset, _ = random_split(dataset, [num_calibration_samples, num_training_samples])
 
     def collate_fn(batch):
-        
         input_ids = torch.stack([torch.tensor(item[0]) for item in batch])
         attention_masks = torch.stack([torch.tensor(item[1]) for item in batch])
         return input_ids, attention_masks
 
     calibration_dataloader = DataLoader(
-        calibration_dataset,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=num_workers,
-        collate_fn=collate_fn
+        calibration_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn
     )
     return calibration_dataloader
 
