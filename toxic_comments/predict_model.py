@@ -1,7 +1,6 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from toxic_comments.models.model import ToxicCommentClassifier
-from torch.quantization import get_default_qconfig
 from transformers import BertTokenizer
 import hydra
 import sys
