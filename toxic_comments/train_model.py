@@ -67,11 +67,6 @@ def train(config):
 
     # Train the model
     trainer.fit(model)
-
-    # Save fine-tuned model and tokenizer after training
-    tuned_model = "./serving/model_token"
-    model.save_pretrained()
-    model.tokenizer.save_pretrained()
     
     # save logged data
     logger.save()
@@ -83,7 +78,7 @@ if __name__ == "__main__":
     wandb_path = pathlib.Path("outputs/wandb_logs/")
     wandb_path.mkdir(exist_ok=True, parents=True)
     wandb_dir = str(wandb_path.absolute())
-    
+
     os.environ["WANDB_DIR"] = wandb_dir
 
     # Initialize wandb
