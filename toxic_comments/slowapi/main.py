@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+#from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import List
+#from typing import List
 from toxic_comments.predict_model import predict_user_input, predict_file_input
 from omegaconf import OmegaConf
 
