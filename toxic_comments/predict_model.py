@@ -148,8 +148,8 @@ def load_model(config):
 
     # Apply pruning to the classifier layer
     parameters_to_prune = (
-        (model.model.classifier, 'weight'),
-        (model.model.classifier, 'bias'),
+        (model.model.classifier, "weight"),
+        (model.model.classifier, "bias"),
     )
     prune.global_unstructured(
         parameters_to_prune,
@@ -158,9 +158,9 @@ def load_model(config):
     )
 
     # To make the pruning permanent
-    prune.remove(model.model.classifier, 'weight')
-    prune.remove(model.model.classifier, 'bias')
-    
+    prune.remove(model.model.classifier, "weight")
+    prune.remove(model.model.classifier, "bias")
+
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
