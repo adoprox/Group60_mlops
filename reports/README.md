@@ -50,34 +50,34 @@ end of the project.
 
 ### Week 1
 
-* [ ] Create a git repository
-* [ ] Make sure that all team members have write access to the github repository
-* [ ] Create a dedicated environment for you project to keep track of your packages
-* [ ] Create the initial file structure using cookiecutter
-* [ ] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
-* [ ] Add a model file and a training script and get that running
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
+* [✓] Create a git repository
+* [✓] Make sure that all team members have write access to the github repository
+* [✓] Create a dedicated environment for you project to keep track of your packages
+* [✓] Create the initial file structure using cookiecutter
+* [✓] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
+* [✓] Add a model file and a training script and get that running
+* [✓] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
 * [ ] Remember to comply with good coding practices (`pep8`) while doing the project
-* [ ] Do a bit of code typing and remember to document essential parts of your code
-* [ ] Setup version control for your data or part of your data
-* [ ] Construct one or multiple docker files for your code
-* [ ] Build the docker files locally and make sure they work as intended
-* [ ] Write one or multiple configurations files for your experiments
-* [ ] Used Hydra to load the configurations and manage your hyperparameters
+* [✓] Do a bit of code typing and remember to document essential parts of your code
+* [✓] Setup version control for your data or part of your data
+* [✓] Construct one or multiple docker files for your code
+* [✓] Build the docker files locally and make sure they work as intended
+* [✓] Write one or multiple configurations files for your experiments
+* [✓] Used Hydra to load the configurations and manage your hyperparameters
 * [ ] When you have something that works somewhat, remember at some point to to some profiling and see if
       you can optimize your code
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
+* [✓] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep.
-* [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
+* [✓] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
+* [✓] Write unit tests related to the data part of your code
+* [✓] Write unit tests related to model construction and or model training
+* [✓] Calculate the coverage.
+* [✓] Get some continuous integration running on the github repository
+* [✓] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
+* [✓] Create a trigger workflow for automatically building your docker images
 * [ ] Get your model training in GCP using either the Engine or Vertex AI
 * [ ] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
@@ -90,7 +90,7 @@ end of the project.
 * [ ] Setup monitoring for the performance of your deployed model
 * [ ] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
-* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
+* [✓] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
 
@@ -105,7 +105,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Group 60
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s220278, s232449, s233231, s222374, s233499
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +129,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Lastly, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. (TOO SHORT)
 
 ## Coding environment
 
@@ -147,8 +147,12 @@ end of the project.
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+We employed `pipreqs` for dependency management, automatically generating the list of dependencies and recording them in the `requirements.txt` file. To replicate our entire development environment, users should follow these steps:
 
---- question 4 fill here ---
+1. Run `make create_environment` to create a conda environment named after the project.
+2. Execute `make requirements` to install all the dependencies necessary to execute the code.
+3. Optionally, users can run `make dev_requirements` to acquire the all the Developer Python Dependencies if needed.
+4. To be able to run the unit tests on the code, it is also necessary to execute `make test_requirements`.
 
 ### Question 5
 
@@ -163,7 +167,8 @@ end of the project.
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
+Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. (TO FIX)
 
 ### Question 6
 
@@ -174,7 +179,7 @@ end of the project.
 >
 > Answer:
 
---- question 6 fill here ---
+We have opted to follow to the standard Pep8 guidelines for code implementation, with the exception that we manually set the maximum line length to 120 characters instead of the standard 79. To ensure code consistency and adherence to these guidelines, we have integrated ruff into our workflow. This tool automatically checks and applies any necessary formatting corrections to the code with each pull request made to the main branch. 
 
 ## Version control
 
@@ -193,7 +198,7 @@ end of the project.
 >
 > Answer:
 
---- question 7 fill here ---
+In total, we have implemented 3 tests for the data loading part and 5 for the model. Regarding the data, we ensure that we load all the datapoints, check if the shape corresponds to the expected one, and verify the presence of all labels for the training data in the dataset. For the model, our tests include validating the correct shape of the output, ensuring the predicted values are binary, verifying the accurate computation of loss and gradients, and confirming that the model can be saved and loaded without encountering errors.
 
 ### Question 8
 
@@ -208,8 +213,9 @@ end of the project.
 >
 > Answer:
 
---- question 8 fill here ---
+![my_image](figures/coverage.png)
 
+We obtained 100% on the coverage of the data part, where we actually analyze the structure of the results of the *make_dataset.py* without analyzing the file itself. We obtain 93% in the code that tests the model which may suggest that few lines are redundant as they are not executed and this means the code itself could be optimized. The model only reaches 40% coverage which suggest that many parts of it are not tested. This however doesn't guarantee anything as even a 100% coverage wouldn't guarantee the code to be correct however it would increase the probability of that. We also wanted to note that one of the tests couldn't be executed as the memory couldn't handle it.
 ### Question 9
 
 > **Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
@@ -223,7 +229,7 @@ end of the project.
 >
 > Answer:
 
---- question 9 fill here ---
+We used both branches and pull requests. We created a list of issues with all the tasks to be done and when we assigned one to a team member they would create a local branch connected to the issue and work on that. When the work was done and pushed the person would create a pull request, the codecheck would run with ruff, and someone else on the team had to approve the solution, and merge into main. We however allowed team members to make changes directly on main to allow for faster small modifications although we know this is not the safer option.
 
 ### Question 10
 

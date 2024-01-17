@@ -26,6 +26,9 @@ requirements:
 dev_requirements: requirements
 	$(PYTHON_INTERPRETER) -m pip install .["dev"]
 
+test_requirements: requirements
+	$(PYTHON_INTERPRETER) -m pip install -r requirements_tests.txt
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
