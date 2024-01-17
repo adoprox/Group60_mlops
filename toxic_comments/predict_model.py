@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from toxic_comments.models.model import ToxicCommentClassifier
-from torch.quantization import get_default_qconfig, quantize_dynamic
+from torch.quantization import get_default_qconfig
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -143,7 +143,7 @@ def load_model(config):
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
 
     train_dataset = torch.load(config.model.data_root + "train.pt")
-    qconfig = get_default_qconfig('fbgemm')
+    #qconfig = get_default_qconfig('fbgemm')
     float_qparams_weight_only_qconfig = torch.quantization.float_qparams_weight_only_qconfig
 
     def set_embedding_qconfig(model):
