@@ -41,103 +41,115 @@ nltk.download('words')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 
-DATA_PATH_RAW = ""
-DATA_PATH_PREDICTION = ""
-
-seed = 42
-threshold = 0.5
-
-# Data pre-processing ------------------------------------------------
-
-train_data = pd.read_csv(DATA_PATH_RAW + "train.csv")
-data_curr= pd.read_csv(DATA_PATH_PREDICTION + "prediction.csv")
-
-# These are used to make the data set (instead of drop and for sample)
-column_labels = train_data.columns.tolist()[2:]
-column_no_id = train_data.columns.tolist()[1:]
-
-# Create subsets based on toxic and clean comments
-train_toxic = train_data[train_data[column_labels].sum(axis=1) > 0]
-# Clean = no all labels are 0, toxic at least one label is 1
-train_clean = train_data[train_data[column_labels].sum(axis=1) == 0]
-
-n_toxic_train = len(train_toxic)  # 16225
-
-# Randomly sample 16225 clean comments
-train_clean_sampled = train_clean.sample(n=n_toxic_train, random_state=seed)
-
-# Combine the toxic and sampled clean comments
-df = pd.concat([train_toxic, train_clean_sampled], axis=0)
-data_review = df[column_no_id]
-
-# Change prediction scores to 0/1
-for column in column_labels:
-    data_curr[column] = data_curr[column].apply(lambda x: 0 if x < threshold else 1)
-
-# Add comment-length column
-
-data_curr["comment_length"] = data_curr["comment_text"].apply(
-    lambda x: len(x)
-)
-data_review["comment_length"] = data_review["comment_text"].apply(
-    lambda x: len(x)
-)
-
-# Setting up the tests ---------------------------------
-
-column_mapping = ColumnMapping(
-    numerical_features=['comment_length'],
-    categorical_features=column_labels,
-    text_features=['comment_text'] 
-)
-
-# Running the tests ----------------------------------------
-
-data_drift_report = Report(metrics=[
-    DataDriftPreset(num_stattest='ks', num_stattest_threshold=0.2),
-    DataQualityPreset(),
-    TextOverviewPreset(column_name = "comment_text")
-])
-
-data_drift_report.run(reference_data=data_review, current_data=data_curr, column_mapping=column_mapping)
-
-# Make folder if it does not exists
-
-if not os.path.isdir("tests"):
-    os.mkdir("tests")
-if not os.path.isdir("reports"):
-    os.mkdir("reports")
-
-data_drift_report.save_html('reports/data_drift_k_labels.html')
+import hydra
 
 
-
-# Running tests -----------------------------------------------
-dataset_tests = TestSuite(tests=[
-    TestNumberOfRows(),
-    TestNumberOfColumns(),
-    TestNumberOfMissingValues(),
-    TestShareOfMissingValues(),
-    TestNumberOfColumnsWithMissingValues(),
-    TestShareOfColumnsWithMissingValues(),
-    TestNumberOfRowsWithMissingValues(),
-    TestShareOfRowsWithMissingValues(),
-    TestNumberOfDifferentMissingValues(),
-    TestNumberOfConstantColumns(),
-    TestNumberOfEmptyRows(),
-    TestNumberOfEmptyColumns(),
-    TestNumberOfDuplicatedRows(),
-    TestNumberOfDuplicatedColumns(),
-    TestColumnsType(),
-    TestConflictTarget(),
-    TestConflictPrediction(),
-    TestHighlyCorrelatedColumns(),
-    TestNumberOfDriftedColumns(),
-    TestShareOfDriftedColumns(),
-])
-dataset_tests.run(reference_data=data_review, current_data=data_curr, column_mapping=column_mapping)
+DATA_PATH_RAW = "data/raw/"
+DATA_PATH_PREDICTION = "outputs/"
+PATH = "tests/test_data_drift/" 
 
 
-dataset_tests.save_html("tests/data_k_labels.html")
+@hydra.main(version_base="1.3", config_name="config.yaml", config_path="")
+def data_drift(config):
+    # Data pre-processing ------------------------------------------
+    train_data = pd.read_csv(DATA_PATH_RAW + "train.csv")
+    data_curr= pd.read_csv(DATA_PATH_PREDICTION + "predictions.csv")
+
+    assert len(data_curr) > 1, "Cannot do analysis on a single row"
+    assert len(train_data) > 1, "Cannot do analysis on a single row"
+
+    # These are used to make the data set (instead of drop and for sample)
+    column_labels = train_data.columns.tolist()[2:]
+    column_no_id = train_data.columns.tolist()[1:]
+
+    # Create subsets based on toxic and clean comments
+    train_toxic = train_data[train_data[column_labels].sum(axis=1) > 0]
+    # Clean = no all labels are 0, toxic at least one label is 1
+    train_clean = train_data[train_data[column_labels].sum(axis=1) == 0]
+
+    n_toxic_train = len(train_toxic)  # 16225
+
+    # Randomly sample 16225 clean comments
+    train_clean_sampled = train_clean.sample(n=n_toxic_train, random_state=config.train.seed)
+
+    # Combine the toxic and sampled clean comments
+    df = pd.concat([train_toxic, train_clean_sampled], axis=0)
+    data_review = df[column_no_id]
+
+    # Change prediction scores to 0/1
+    for column in column_labels:
+        data_curr[column] = data_curr[column].apply(lambda x: 0 if x < config.predict.threshold else 1)
+
+    # Add comment-length column 
+
+    data_curr["comment_length"] = data_curr["comment_text"].apply(
+        lambda x: len(x)
+    )
+    data_review["comment_length"] = data_review["comment_text"].apply(
+        lambda x: len(x)
+    )
+
+    # Setting up the tests ---------------------------------
+
+    column_mapping = ColumnMapping(
+        numerical_features=['comment_length'],
+        categorical_features=column_labels,
+        text_features=['comment_text'] 
+    )
+
+    # Running the tests ------------------------------------
+
+    data_drift_report = Report(metrics=[
+        DataDriftPreset(num_stattest='ks', num_stattest_threshold=0.2),
+        DataQualityPreset(),
+        TextOverviewPreset(column_name = "comment_text")
+    ])
+
+    data_drift_report.run(reference_data=data_review, 
+                          current_data=data_curr, 
+                          column_mapping=column_mapping
+    )
+
+    # Make folder if it does not exists
+    if not os.path.isdir(PATH + "tests"):
+        os.mkdir(PATH + "tests")
+    if not os.path.isdir(PATH + "reports"):
+        os.mkdir(PATH + "reports")
+
+    # Save the report as a html file
+    data_drift_report.save_html(PATH + 'reports/data_drift_k_labels.html')
 
 
+    # Running tests -----------------------------------------------
+    dataset_tests = TestSuite(tests=[
+        TestNumberOfRows(),
+        TestNumberOfColumns(),
+        TestNumberOfMissingValues(),
+        TestShareOfMissingValues(),
+        TestNumberOfColumnsWithMissingValues(),
+        TestShareOfColumnsWithMissingValues(),
+        TestNumberOfRowsWithMissingValues(),
+        TestShareOfRowsWithMissingValues(),
+        TestNumberOfDifferentMissingValues(),
+        TestNumberOfConstantColumns(),
+        TestNumberOfEmptyRows(),
+        TestNumberOfEmptyColumns(),
+        TestNumberOfDuplicatedRows(),
+        TestNumberOfDuplicatedColumns(),
+        TestColumnsType(),
+        TestConflictTarget(),
+        TestConflictPrediction(),
+        TestHighlyCorrelatedColumns(),
+        TestNumberOfDriftedColumns(),
+        TestShareOfDriftedColumns(),
+    ])
+    # Run the tests
+    dataset_tests.run(reference_data=data_review, current_data=data_curr, column_mapping=column_mapping)
+
+    # Save the tests as a html file
+    dataset_tests.save_html(PATH + "tests/data_k_labels.html")
+
+
+if __name__ == "__main__":
+    data_drift()
+    
