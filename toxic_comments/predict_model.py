@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset, random_split
-from toxic_comments.models.model import ToxicCommentClassifier
+from models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import torch.nn.utils.prune as prune
 from pathlib import Path
+import csv
 
 
 # Token and Encode Function
@@ -105,8 +106,8 @@ def predict_user_input(config):
     # Save results
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
     r_df = pd.DataFrame(result[0], columns=labels_list)
-    r_df.to_csv("outputs/predictions.csv")
-
+    r_df.insert(0,"comment_text",config.text)
+    r_df.to_csv("outputs/predictions.csv", index = False,quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_file_input(config):
@@ -124,7 +125,9 @@ def predict_file_input(config):
 
     # save the result
     r_df = pd.DataFrame(np.concatenate(results), columns=labels_list)
-    r_df.to_csv("outputs/predictions.csv")
+    r_df.insert(0,"comment_text",file_input["Comment"])
+    r_df.to_csv("outputs/predictions.csv", index = False,quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+
 
 
 def load_model(config):
