@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from toxic_comments.predict_model import predict_user_input_hosting
 from omegaconf import OmegaConf
-import pandas as pd
+#import pandas as pd
 
 
 app = Flask(__name__)
