@@ -1,7 +1,7 @@
 import torch
-from torch.utils.data import DataLoader
-from torch.utils.data import TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, random_split
 from toxic_comments.models.model import ToxicCommentClassifier
+from torch.quantization import get_default_qconfig, quantize_dynamic
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -142,11 +142,61 @@ def load_model(config):
     # load the model, use strict = False to work even if some parameters are missing
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
 
+    train_dataset = torch.load(config.model.data_root + "train.pt")
+    qconfig = get_default_qconfig('fbgemm')
+    float_qparams_weight_only_qconfig = torch.quantization.float_qparams_weight_only_qconfig
+
+    def set_embedding_qconfig(model):
+        for name, module in model.named_modules():
+            if isinstance(module, torch.nn.Embedding):
+                module.qconfig = float_qparams_weight_only_qconfig
+
+    # Prepare and calibrate the model with the calibration dataset
+    torch.quantization.prepare(model, inplace=True)
+    
+    calibration_dataloader = create_calibration_dataloader(
+        dataset=train_dataset, # Replace with your dataset variable
+        calibration_split=0.005,
+        batch_size=32,
+        num_workers=0
+    )
+    calibrate_model(model, calibration_dataloader)
+    set_embedding_qconfig(model)
+    model_quantized = torch.quantization.convert(model, inplace=False)
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
 
-    return tokenizer, model, device
+    return tokenizer, model_quantized, device
+
+def calibrate_model(model, data_loader):
+    model.eval()
+    with torch.no_grad():
+        for batch in data_loader:
+            input_ids, attention_mask = batch
+            # Pass both input_ids and attention_mask to the model
+            model(input_ids, attention_mask= attention_mask)
+
+
+def create_calibration_dataloader(dataset, calibration_split=0.1, batch_size=32, num_workers=0):
+    num_calibration_samples = int(len(dataset) * calibration_split)
+    num_training_samples = len(dataset) - num_calibration_samples
+    calibration_dataset, _ = random_split(dataset, [num_calibration_samples, num_training_samples])
+
+    def collate_fn(batch):
+        
+        input_ids = torch.stack([torch.tensor(item[0]) for item in batch])
+        attention_masks = torch.stack([torch.tensor(item[1]) for item in batch])
+        return input_ids, attention_masks
+
+    calibration_dataloader = DataLoader(
+        calibration_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        collate_fn=collate_fn
+    )
+    return calibration_dataloader
 
 
 if __name__ == "__main__":
