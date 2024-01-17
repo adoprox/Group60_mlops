@@ -212,9 +212,9 @@ In total, we have implemented 3 tests for the data loading part and 5 for the mo
 > *code and even if we were then...*
 >
 > Answer:
-```markdown
+
 ![my_image](figures/coverage.png)
-```
+
     We obtained 100% on the coverage of the data part, where we actually analyze the structure of the results of the *make_dataset.py* without analyzing the file itself. We obtain 93% in the code that tests the model which may suggest that few lines are redundant as they are not executed and this means the code itself could be optimized. The model only reaches 40% coverage which suggest that many parts of it are not tested. This however doesn't guarantee anything as even a 100% coverage wouldn't guarantee the code to be correct however it would increase the probability of that. We also wanted to note that one of the tests couldn't be executed as the memory couldn't handle it.
 ### Question 9
 
