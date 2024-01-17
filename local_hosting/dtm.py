@@ -35,45 +35,21 @@ def transformers_model_dowloader(
     print("Download model and tokenizer", pretrained_model_name)
     # loading pre-trained model and tokenizer
     if mode == "sequence_classification":
-        config = AutoConfig.from_pretrained(
-            pretrained_model_name, num_labels=num_labels, torchscript=torchscript
-        )
-        model = AutoModelForSequenceClassification.from_pretrained(
-            pretrained_model_name, config=config
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            pretrained_model_name, do_lower_case=do_lower_case
-        )
+        config = AutoConfig.from_pretrained(pretrained_model_name, num_labels=num_labels, torchscript=torchscript)
+        model = AutoModelForSequenceClassification.from_pretrained(pretrained_model_name, config=config)
+        tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name, do_lower_case=do_lower_case)
     elif mode == "question_answering":
-        config = AutoConfig.from_pretrained(
-            pretrained_model_name, torchscript=torchscript
-        )
-        model = AutoModelForQuestionAnswering.from_pretrained(
-            pretrained_model_name, config=config
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            pretrained_model_name, do_lower_case=do_lower_case
-        )
+        config = AutoConfig.from_pretrained(pretrained_model_name, torchscript=torchscript)
+        model = AutoModelForQuestionAnswering.from_pretrained(pretrained_model_name, config=config)
+        tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name, do_lower_case=do_lower_case)
     elif mode == "token_classification":
-        config = AutoConfig.from_pretrained(
-            pretrained_model_name, num_labels=num_labels, torchscript=torchscript
-        )
-        model = AutoModelForTokenClassification.from_pretrained(
-            pretrained_model_name, config=config
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            pretrained_model_name, do_lower_case=do_lower_case
-        )
+        config = AutoConfig.from_pretrained(pretrained_model_name, num_labels=num_labels, torchscript=torchscript)
+        model = AutoModelForTokenClassification.from_pretrained(pretrained_model_name, config=config)
+        tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name, do_lower_case=do_lower_case)
     elif mode == "text_generation":
-        config = AutoConfig.from_pretrained(
-            pretrained_model_name, num_labels=num_labels, torchscript=torchscript
-        )
-        model = AutoModelForCausalLM.from_pretrained(
-            pretrained_model_name, config=config
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            pretrained_model_name, do_lower_case=do_lower_case
-        )
+        config = AutoConfig.from_pretrained(pretrained_model_name, num_labels=num_labels, torchscript=torchscript)
+        model = AutoModelForCausalLM.from_pretrained(pretrained_model_name, config=config)
+        tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name, do_lower_case=do_lower_case)
 
         # NOTE : for demonstration purposes, we do not go through the fine-tune processing here.
         # A Fine_tunining process based on your needs can be added.
@@ -110,9 +86,7 @@ def transformers_model_dowloader(
             import torch_neuron
 
             input_ids = torch.cat([inputs["input_ids"]] * batch_size, 0).to(device)
-            attention_mask = torch.cat([inputs["attention_mask"]] * batch_size, 0).to(
-                device
-            )
+            attention_mask = torch.cat([inputs["attention_mask"]] * batch_size, 0).to(device)
             traced_model = torch_neuron.trace(model, (input_ids, attention_mask))
             torch.jit.save(
                 traced_model,
@@ -125,17 +99,13 @@ def transformers_model_dowloader(
             import torch_neuronx
 
             input_ids = torch.cat([inputs["input_ids"]] * batch_size, 0).to(device)
-            attention_mask = torch.cat([inputs["attention_mask"]] * batch_size, 0).to(
-                device
-            )
+            attention_mask = torch.cat([inputs["attention_mask"]] * batch_size, 0).to(device)
             traced_model = torch_neuronx.trace(model, (input_ids, attention_mask))
             torch.jit.save(
                 traced_model,
                 os.path.join(
                     NEW_DIR,
-                    "traced_{}_model_neuronx_batch_{}.pt".format(
-                        model_name, batch_size
-                    ),
+                    "traced_{}_model_neuronx_batch_{}.pt".format(model_name, batch_size),
                 ),
             )
         else:
