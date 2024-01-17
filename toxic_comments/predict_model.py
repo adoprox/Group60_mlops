@@ -59,7 +59,7 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
-def predict(inputs, tokenizer, model, device):
+
 def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
@@ -97,14 +97,7 @@ def predict_user_input(config):
     """Predict user input and save the results to a CSV file."""
 
     # Get input
-    # Get input
     user_input = [config.text]
-
-    # load model
-    tokenizer, model, device = load_model(config)
-
-    # Compute prediction
-    result = predict(user_input, tokenizer, model, device)
 
     # load model
     tokenizer, model, device = load_model(config)
@@ -127,11 +120,7 @@ def predict_file_input(config):
     # load model
     tokenizer, model, device = load_model(config)
 
-    # load model
-    tokenizer, model, device = load_model(config)
-
     # Compute predictions
-    results = predict(list(file_input["Comment"]), tokenizer, model, device)
     results = predict(list(file_input["Comment"]), tokenizer, model, device)
 
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
