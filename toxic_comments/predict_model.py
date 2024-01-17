@@ -42,7 +42,6 @@ def tokenize_and_encode(tokenizer, comments):
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
             padding="longest",
-            padding="longest",
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
