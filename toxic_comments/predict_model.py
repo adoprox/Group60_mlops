@@ -1,6 +1,8 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from toxic_comments.models.model import ToxicCommentClassifier
+from torch.utils.data import DataLoader, TensorDataset, random_split
+from toxic_comments.models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
@@ -40,6 +42,7 @@ def tokenize_and_encode(tokenizer, comments):
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
             padding="longest",
+            padding="longest",
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
@@ -57,6 +60,7 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
+def predict(inputs, tokenizer, model, device):
 def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
@@ -94,7 +98,14 @@ def predict_user_input(config):
     """Predict user input and save the results to a CSV file."""
 
     # Get input
+    # Get input
     user_input = [config.text]
+
+    # load model
+    tokenizer, model, device = load_model(config)
+
+    # Compute prediction
+    result = predict(user_input, tokenizer, model, device)
 
     # load model
     tokenizer, model, device = load_model(config)
@@ -117,7 +128,11 @@ def predict_file_input(config):
     # load model
     tokenizer, model, device = load_model(config)
 
+    # load model
+    tokenizer, model, device = load_model(config)
+
     # Compute predictions
+    results = predict(list(file_input["Comment"]), tokenizer, model, device)
     results = predict(list(file_input["Comment"]), tokenizer, model, device)
 
     labels_list = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
