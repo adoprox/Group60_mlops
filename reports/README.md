@@ -229,7 +229,7 @@ We obtained 100% on the coverage of the data part, where we actually analyze the
 >
 > Answer:
 
---- question 9 fill here ---
+We used both branches and pull requests. We created a list of issues with all the tasks to be done and when we assigned one to a team member they would create a local branch connected to the issue and work on that. When the work was done and pushed the person would create a pull request, the codecheck would run with ruff, and someone else on the team had to approve the solution, and merge into main. We however allowed team members to make changes directly on main to allow for faster small modifications although we know this is not the safer option.
 
 ### Question 10
 
