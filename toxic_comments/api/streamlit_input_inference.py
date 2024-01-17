@@ -23,9 +23,12 @@ def load_model_decorator(config: DictConfig):
 cfg = load_config()
 tokenizer, model, device = load_model_decorator(cfg)
 input = st.text_area(label="input")
+# Convert the input characters to a list of words
+input = input.split()
 
 # def run_input_prediction():
 #     output =
 if st.button(label="Run inference"):
     output = predict(input, tokenizer, model, device)
     output
+    
