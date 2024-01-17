@@ -8,7 +8,7 @@ https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challeng
 The project aims to develop a classifier for identifying toxic comments, as part of the Kaggle Toxic Comment Classification Challenge. This classifier's primary function is to analyze individual comments and estimate the likelihood of each comment falling into one of seven categories. The categories include six specific classes: toxic, severe toxic, obscene, threat, insult, and identity hate, along with a seventh for general classification.
 
 ## Framework
-To achieve this, we are utilizing a combination of FastAi and PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We chose to use pytorch-lightning as a high-level framework to reduce boilerplate code that we would have to write.
+To achieve this, we are utilizing PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We are using the standard "bert-base-uncased".
 
 ## Data
 Our data source is the Kaggle Toxic Comment Classification dataset, which comprises various comments sourced from Wikipedia. Each comment in this dataset is tagged with one or more labels corresponding to the six toxic categories. The dataset's structure and labels allow for a comprehensive training regime, catering to our classifier's need for diverse and complex examples. Interested parties can access the dataset through the provided Kaggle link: [Toxic comment classification challenge data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
@@ -81,21 +81,52 @@ git clone https://github.com/adoprox/Group60_mlops.git
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
 
+#### Known issues
+
+#### DVC fails to pull
+
+If you get this error:
+
+    ```
+    ERROR: failed to pull data from the cloud - Checkout failed for following targets: models
+    I your cache up to date?
+    ```
+
+The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
+
+## Wandb sweeps
+
+1. To set custom logging directory, set this environment variable before running the sweep: 
+`export WANDB_DIR=./outputs/wandb_logs/`
+
+2. Create a new sweep using: 
+`wandb sweep ./toxic_comments/models/config/sweep.yaml`
+
+3. Run the sweep with the command that gets output after you create the sweep
+
+> Note: when you update the sweep.yaml you will need to create a new sweep to use the updated configuration file. If you reuse the old sweep, it will also reuse the old configuration file!
+
 ## Docker containers
 
 ### Commands to build docker containers
 1. Training container: `docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest`
 2. Prediction container: `docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest`
+3. Inference container: `docker build -f dockerfiles/inference_streamlit.dockerfile . -t inference:latest`
 Predict is still under work
 
 ### Commands to run docker containers
 The docker containers are set up without an entrypoint. The data root folder is in the configuration, the default is set to ./data/processed.
 
-#### Running locally with default root data directory:
-`docker run -v ./data:/data -e WANDB_API_KEY='<your-api-key>' group60_trainer:latest python3 ./toxic_comments/train_model.py`
+#### Running the training container:
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' group60_trainer:latest python3 ./toxic_comments/train_model.py`
 
-#### Running in cloud with GCS bucket as root data directory: 
-TODO
+IMPORTANT: to add GPU support to a container, add the flag `--gpus all` to above command, like so:
+
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all group60_trainer:latest python3 ./toxic_comments/train_model.py`
+
+##### Command for running in cloud:
+
+`docker run -v ./data:/data -v ./models:/models -e WANDB_API_KEY='<your-api-key>' --gpus all gcr.io/propane-facet-410709/bert-toxic-trainer:latest python3 ./toxic_comments/train_model.py`
 
 ## Gcloud setup
 The following section contains documentation and rules for how to interact with the cloud setup.
@@ -108,6 +139,30 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
+
+### Creating inference instance
+
+The following command can be used to create a new inference service based on the latest version of the streamlit inference container:
+`gcloud run deploy inference-streamlit --image gcr.io/propane-facet-410709/inference-streamlit:latest --platform managed --region europe-west4 --allow-unauthenticated --port 8501`
+
+Additionally, a new instance will be deployed via a trigger whenever a push to main happens.
+
+## Training the model on a compute instance
+
+1. Create an instance with GPU, choose one of the Deep learning images. When starting the instance, make sure the nvidia drivers and cuda are installed correctly. Make sure the VM has access to all APIs.
+2. Clone the repository
+3. Run dvc pull, supply credentials
+4. Train model
+5. Run dvc add models/
+6. Run dvc push -r gcloud-drive
+
+Alternatively, the model can also be trained within a container. For that:
+1. Create an instance with GPU, choose one of the Deep learning images. When starting the instance, make sure the nvidia drivers and cuda are installed correctly. Make sure the
+2. Pull the container with: `docker pull gcr.io/propane-facet-410709/bert-toxic-trainer:latest`
+3. Install gcloud, gsutil, etc. 
+4. Copy training data from cloud storage to container: `gsutil rsync -r gs://group_60_data/data ./data`. This command will copy the data stored in the bucket to the local data directory (assuming current directoy is the project root)
+5. Run the container with above command.
+6. wandb should automatically upload the model checkpoints. But they can also be uploaded using: `gsutil rsync -r ./local/path/to/models gs://group_60_models`
 
 ## Predict
 The prediction script can classify a comment or a list of comments given as input:
