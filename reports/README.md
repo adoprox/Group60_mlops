@@ -50,34 +50,34 @@ end of the project.
 
 ### Week 1
 
-* [ ] Create a git repository
-* [ ] Make sure that all team members have write access to the github repository
-* [ ] Create a dedicated environment for you project to keep track of your packages
-* [ ] Create the initial file structure using cookiecutter
-* [ ] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
-* [ ] Add a model file and a training script and get that running
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
+* [✓] Create a git repository
+* [✓] Make sure that all team members have write access to the github repository
+* [✓] Create a dedicated environment for you project to keep track of your packages
+* [✓] Create the initial file structure using cookiecutter
+* [✓] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
+* [✓] Add a model file and a training script and get that running
+* [✓] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
 * [ ] Remember to comply with good coding practices (`pep8`) while doing the project
-* [ ] Do a bit of code typing and remember to document essential parts of your code
-* [ ] Setup version control for your data or part of your data
-* [ ] Construct one or multiple docker files for your code
-* [ ] Build the docker files locally and make sure they work as intended
-* [ ] Write one or multiple configurations files for your experiments
-* [ ] Used Hydra to load the configurations and manage your hyperparameters
+* [✓] Do a bit of code typing and remember to document essential parts of your code
+* [✓] Setup version control for your data or part of your data
+* [✓] Construct one or multiple docker files for your code
+* [✓] Build the docker files locally and make sure they work as intended
+* [✓] Write one or multiple configurations files for your experiments
+* [✓] Used Hydra to load the configurations and manage your hyperparameters
 * [ ] When you have something that works somewhat, remember at some point to to some profiling and see if
       you can optimize your code
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
+* [✓] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep.
-* [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
+* [✓] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
+* [✓] Write unit tests related to the data part of your code
+* [✓] Write unit tests related to model construction and or model training
+* [✓] Calculate the coverage.
+* [✓] Get some continuous integration running on the github repository
+* [✓] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
+* [✓] Create a trigger workflow for automatically building your docker images
 * [ ] Get your model training in GCP using either the Engine or Vertex AI
 * [ ] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
@@ -90,7 +90,7 @@ end of the project.
 * [ ] Setup monitoring for the performance of your deployed model
 * [ ] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
-* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
+* [✓] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
 
@@ -212,9 +212,10 @@ In total, we have implemented 3 tests for the data loading part and 5 for the mo
 > *code and even if we were then...*
 >
 > Answer:
-
---- question 8 fill here ---
-
+```markdown
+![my_image](figures/coverage.png)
+```
+    We obtained 100% on the coverage of the data part, where we actually analyze the structure of the results of the *make_dataset.py* without analyzing the file itself. We obtain 93% in the code that tests the model which may suggest that few lines are redundant as they are not executed and this means the code itself could be optimized. The model only reaches 40% coverage which suggest that many parts of it are not tested. This however doesn't guarantee anything as even a 100% coverage wouldn't guarantee the code to be correct however it would increase the probability of that. We also wanted to note that one of the tests couldn't be executed as the memory couldn't handle it.
 ### Question 9
 
 > **Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
