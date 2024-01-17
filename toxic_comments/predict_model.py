@@ -1,12 +1,13 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
-from toxic_comments.models.model import ToxicCommentClassifier
+from models.model import ToxicCommentClassifier
 from transformers import BertTokenizer
 import hydra
 import sys
 import pandas as pd
 import numpy as np
+import torch.nn.utils.prune as prune
 
 
 # Token and Encode Function
@@ -141,7 +142,25 @@ def load_model(config):
 
     # load the model, use strict = False to work even if some parameters are missing
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
+    model.eval()
 
+    model.to(device)
+
+    # Apply pruning to the classifier layer
+    parameters_to_prune = (
+        (model.model.classifier, 'weight'),
+        (model.model.classifier, 'bias'),
+    )
+    prune.global_unstructured(
+        parameters_to_prune,
+        pruning_method=prune.L1Unstructured,
+        amount=0.2,
+    )
+
+    # To make the pruning permanent
+    prune.remove(model.model.classifier, 'weight')
+    prune.remove(model.model.classifier, 'bias')
+    
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
