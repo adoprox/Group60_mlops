@@ -87,7 +87,7 @@ class TransformersSeqClassifierHandler(BaseHandler, ABC):
 
                 try:
                     self.model = BetterTransformer.transform(self.model)
-                except RuntimeError as error:
+                except RuntimeError:
                     logger.warning(
                         "HuggingFace Optimum is not supporting this model,for the list of supported models, please refer to this doc,https://huggingface.co/docs/optimum/bettertransformer/overview"
                     )
