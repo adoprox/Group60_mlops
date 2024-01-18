@@ -330,7 +330,20 @@ Example execution: python3 ./toxic_comments/train_model.py param_to_override_opt
 >
 > Answer:
 
---- question 14 fill here ---
+![Wandb](figures/screenshot_wandb.png)
+![Wandb run overview](figures/screenshot_wandb_run_overview.png)
+
+As seen in the images, we have used Weights and biases to keep track of experiments. We decided on wand because it easily allowed all team members to have access to logs & metrics of past experiments. Additionally, wandb allowed us to do sweeps and keep track of those as well. The first image shows the overview over all past experiments that were run, while the second image show the system configuration used for running an experiment in the cloud.
+
+We tracked the following metrics:
+
+* Validation Loss: Indicates the model's prediction error on unseen data, crucial for detecting overfitting.
+* Train Loss: Shows the model's error on training data, essential for understanding how well the model is learning.
+* Test Accuracy: Reflects the percentage of correct predictions on new data, vital for assessing model generalization.
+* Test Precision: Measures the proportion of true positives among positive predictions, important where false positives have high costs.
+* Loss: Aggregated training loss, useful for tracking overall learning progress.
+* Configuration: The exact exact configuration that was used for training is key for reproduceability of experiments
+* System parameters: useful for finding bottleneck or errors
 
 ### Question 15
 
