@@ -513,4 +513,10 @@ We implement checks towards data drifting as it can have an impact on the perfor
 >
 > Answer:
 
---- question 27 fill here ---
+We all worked in finding the problem and organizing the work, we also all contributed to help each other and fix mistakes, therefore we'll just write below who first created a part of the project and so was more involved in that.
+
+s220278: Worked with the cloud in data storage, training, deploying it. Also added CI to the cloud and wandb. Created streamlit.
+s232449: Implemented the predict script and make dataset, added continuous integration and documentation.
+s233231: Implemented tests and coverage, pruning and quantization, and organized outputs and dvc.
+s222374: Implemented dockers and triggers. Worked on the deployment on a Flask api.
+s233499: Implemented model and training script, worked on training on the cloud. Created checks for data drifting.
