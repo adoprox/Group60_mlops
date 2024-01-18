@@ -313,7 +313,7 @@ Example execution: python3 ./toxic_comments/train_model.py param_to_override_opt
 >
 > Answer:
 
---- question 13 fill here ---
+We have implemented a robust system from the beginning for ensuring the reproducibility and version control of our experiments. We used multiple of the config files incorporated with Hydra to make our experiments reproducible. Indeed, together with the model also the hyperparameters are saved thus allowing for reproducibility and version control. Also W&B helped us in keep our experiments reproducibles as it saves the hyperparameters together with the logs. Therefore we are sure that no information is lost even if running multiple experiments. Indeed, this approach ensures that every facet of our experiments is systematically documented, allowing for reproducibility across different runs.
 
 ### Question 14
 
