@@ -416,7 +416,7 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 21 fill here ---
+![my_image](figures/build_cloud.png)
 
 ### Question 22
 
