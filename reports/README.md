@@ -80,7 +80,7 @@ end of the project.
 * [✓] Create a trigger workflow for automatically building your docker images
 * [✓] Get your model training in GCP using either the Engine or Vertex AI
 * [✓] Create a FastAPI application that can do inference using your model
-* [ ] If applicable, consider deploying the model locally using torchserve
+* [✓] If applicable, consider deploying the model locally using torchserve
 * [✓] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
@@ -342,8 +342,12 @@ Example execution: python3 ./toxic_comments/train_model.py param_to_override_opt
 >
 > Answer:
 
---- question 15 fill here ---
+For our project we made 3 different docker containers. One for training the model and the other two to run inference. 
+For training the model initially we ran into issues with docker containers working with VertexAI and we could not use it to train the model. For training we cloned the repository locally over a VM running on the gcp instance and conducted training. Our effort was to utilize docker and VertexAI to train and run the model, but as explained earlier training did not happen using that approach and our docker kept running into issues with cloud atrifact registry. .However we were able to host both the inference containers using docker containers made using cloud build. 
 
+Streamlit - ENTRYPOINT ["streamlit", "run", "./toxic_comments/api/streamlit_input_inference.py"]
+Flask - ENTRYPOINT ["python", "./toxic_comments/slowapi/ask.py"]
+ 
 ### Question 16
 
 > **When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you**
@@ -432,7 +436,13 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 22 fill here ---
+We delpoyed our model using 2 approaches, one using a streamlit app and other other using a flask API. Both the methods deploy the model over gcp and have similar interface. The streamlit app offers a text input and then passes it to the predict fucntion to run inference, the output is the probabilites for each of the 6 classes - toxic, severe_toxic, obscene, threat, insult, identity_hate model is trained to classify for. The flask API does something similar with the text input, but also offers running inference on text files. The output is again probabilites of the 6 classes model is trained on. <br>
+
+Deploying models from both approaches followed standard procedure to make a .yaml file first and the creating a cloud build trigger over gcp. Both the trigger actions are associated with their respective .yaml files and the rest is taken care by the cloud. The template provided during the course is used works well after we edit the project ID.
+
+![flask](/reports/figures/flask.png) <br>
+![streamlit]()
+
 
 ### Question 23
 
