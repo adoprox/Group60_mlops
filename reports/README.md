@@ -407,7 +407,7 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 20 fill here ---
+![my_image](figures/registry_cloud.png)
 
 ### Question 21
 
