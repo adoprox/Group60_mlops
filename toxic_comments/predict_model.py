@@ -57,7 +57,6 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
-
 def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
@@ -110,6 +109,7 @@ def predict_user_input(config):
     r_df = pd.DataFrame(result[0], columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
 
+
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def predict_user_input_hosting(config):
     user_input = [config.text]
@@ -121,7 +121,6 @@ def predict_user_input_hosting(config):
     r_df = pd.DataFrame(result[0], columns=labels_list)
     r_df.to_csv("outputs/predictions.csv")
     return r_df
-
 
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
