@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 
 
-
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments):
     """Tokenize and encode comments using the BERT tokenizer.
@@ -141,11 +140,10 @@ def load_model(config):
 
     # load the model, use strict = False to work even if some parameters are missing
     model = ToxicCommentClassifier.load_from_checkpoint(checkpoint_path, strict=False)
-    
+
     model.eval()
 
     model.to(device)
-
 
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
