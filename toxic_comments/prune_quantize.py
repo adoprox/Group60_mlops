@@ -8,6 +8,9 @@ import re
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def prune_and_quantize(config):
+    """ This function quantizes the model, which should help with performance. 
+    The quantized model works on CPU only for now. """
+    
     checkpoint_path = config.predict.checkpoint_path
 
     # load the model, use strict = False to work even if some parameters are missing
