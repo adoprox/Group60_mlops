@@ -57,7 +57,7 @@ end of the project.
 * [✓] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
 * [✓] Add a model file and a training script and get that running
 * [✓] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project
+* [✓] Remember to comply with good coding practices (`pep8`) while doing the project
 * [✓] Do a bit of code typing and remember to document essential parts of your code
 * [✓] Setup version control for your data or part of your data
 * [✓] Construct one or multiple docker files for your code
@@ -78,17 +78,17 @@ end of the project.
 * [✓] Get some continuous integration running on the github repository
 * [✓] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
 * [✓] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
-* [ ] If applicable, consider deploying the model locally using torchserve
-* [ ] Deploy your model in GCP using either Functions or Run as the backend
+* [✓] Get your model training in GCP using either the Engine or Vertex AI
+* [✓] Create a FastAPI application that can do inference using your model
+* [✓] If applicable, consider deploying the model locally using torchserve
+* [✓] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting
+* [✓] Check how robust your model is towards data drifting
 * [ ] Setup monitoring for the system telemetry of your deployed model
 * [ ] Setup monitoring for the performance of your deployed model
-* [ ] If applicable, play around with distributed data loading
+* [✓] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
 * [✓] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
@@ -129,7 +129,7 @@ s220278, s232449, s233231, s222374, s233499
 >
 > Answer:
 
-First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Lastly, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. (TOO SHORT)
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Then, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. Also, we used Wandb for logging purposes, to save metrics and variables so to check how our model was training. We also use Streamlit to create a simple web-app to use our solution. 
 
 ## Coding environment
 
@@ -147,12 +147,15 @@ First, we utilized the PyTorch-Transformers framework (now known as pytorch_pret
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+
 We employed `pipreqs` for dependency management, automatically generating the list of dependencies and recording them in the `requirements.txt` file. To replicate our entire development environment, users should follow these steps:
 
 1. Run `make create_environment` to create a conda environment named after the project.
 2. Execute `make requirements` to install all the dependencies necessary to execute the code.
 3. Optionally, users can run `make dev_requirements` to acquire the all the Developer Python Dependencies if needed.
 4. To be able to run the unit tests on the code, it is also necessary to execute `make test_requirements`.
+
+We also have a 'requirements_inference.txt'.
 
 ### Question 5
 
@@ -167,8 +170,8 @@ We employed `pipreqs` for dependency management, automatically generating the li
 > *experiments.*
 > Answer:
 
-From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
-Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. (TO FIX)
+From the cookiecutter template we have filled out with '.csv' files the data folder in the raw subfolder, and the tokenized data is created in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder. Also there the api files are stored.
+Since visualization was not incorporated into our project, the respective folder was removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. 
 
 ### Question 6
 
@@ -244,7 +247,11 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 10 fill here ---
+Yes, we implemented data version control, we tested both google drive and google cloud storage as remotes. In particular, it helped us to easily disseminate our training, testing data and models to different machines.
+
+For the scope of our model, the version control part of DVC was probably not as important, as our project was not large enough to go through several iterations of our data.
+
+However, we faced severe difficulties in integrating dvc into our github actions for model and data testing. The reason is, that neither authentication with google drive is seemingly not possible in an automated manner, and dvc-gs expects a credential file, but we didn't find a way to supply in Github actions.
 
 ### Question 11
 
@@ -260,12 +267,22 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 11 fill here ---
+For CI we are automatically checking code smells using ruff, as well as automatically formatting the code using Github actions. Due to authentication problems mentioned above, we were unable to run the majority of our tests in Github actions.
+
+For continuous delivery, we set up three containers that get automatically built and some are also automatically deployed. The three containers we have are: one container for training, one with a streamlit app over prediction, and one hosting an API with flask.
+
+Model data necessary for running inference is pulled from a cloud storage bucket. No automatic update of the models included in the containers is set up to avoid accidentally using a bad model in production due to a new training run that used bad parameters.
+
+The streamlit container automatically gets deployed to google cloud run after is has been built and can be reached using the URL: <https://inference-streamlit-kjftsv3ocq-ez.a.run.app>.
 
 ## Running code and tracking experiments
 
 > In the following section we are interested in learning more about the experimental setup for running your code and
 > especially the reproducibility of your experiments.
+
+For reproduceability and tracking of experiments we are using model configurations and wandb for logging.
+
+Whenever a model is being trained, the training logs containing the model configuration, training configuration, loss, performance, etc. get sent to wandb. This allows us to keep track of how a model performed with a given configuration. 
 
 ### Question 12
 
@@ -279,7 +296,9 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 12 fill here ---
+We use hydra to load our configuration files for the model and training. Hydra allows us to pass command-line arguments to override the configuration. Any overrides also get logged using wandb. For a default run configuration, no overrides have to be made.
+
+Example execution: python3 ./toxic_comments/train_model.py param_to_override_optional="some value"
 
 ### Question 13
 
@@ -294,7 +313,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 13 fill here ---
+We have implemented a robust system from the beginning for ensuring the reproducibility and version control of our experiments. We used multiple of the config files incorporated with Hydra to make our experiments reproducible. Indeed, together with the model also the hyperparameters are saved thus allowing for reproducibility and version control. Also W&B helped us in keep our experiments reproducibles as it saves the hyperparameters together with the logs. Therefore we are sure that no information is lost even if running multiple experiments. Indeed, this approach ensures that every facet of our experiments is systematically documented, allowing for reproducibility across different runs.
 
 ### Question 14
 
@@ -311,7 +330,20 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 14 fill here ---
+![Wandb](figures/screenshot_wandb.png)
+![Wandb run overview](figures/screenshot_wandb_run_overview.png)
+
+As seen in the images, we have used Weights and biases to keep track of experiments. We decided on wand because it easily allowed all team members to have access to logs & metrics of past experiments. Additionally, wandb allowed us to do sweeps and keep track of those as well. The first image shows the overview over all past experiments that were run, while the second image show the system configuration used for running an experiment in the cloud.
+
+We tracked the following metrics:
+
+* Validation Loss: Indicates the model's prediction error on unseen data, crucial for detecting overfitting.
+* Train Loss: Shows the model's error on training data, essential for understanding how well the model is learning.
+* Test Accuracy: Reflects the percentage of correct predictions on new data, vital for assessing model generalization.
+* Test Precision: Measures the proportion of true positives among positive predictions, important where false positives have high costs.
+* Loss: Aggregated training loss, useful for tracking overall learning progress.
+* Configuration: The exact exact configuration that was used for training is key for reproduceability of experiments
+* System parameters: useful for finding bottleneck or errors
 
 ### Question 15
 
@@ -326,8 +358,12 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 15 fill here ---
+For our project we made 3 different docker containers. One for training the model and the other two to run inference. 
+For training the model initially we ran into issues with docker containers working with VertexAI and we could not use it to train the model. For training we cloned the repository locally over a VM running on the gcp instance and conducted training. Our effort was to utilize docker and VertexAI to train and run the model, but as explained earlier training did not happen using that approach and our docker kept running into issues with cloud atrifact registry. .However we were able to host both the inference containers using docker containers made using cloud build. 
 
+Streamlit - ENTRYPOINT ["streamlit", "run", "./toxic_comments/api/streamlit_input_inference.py"]
+Flask - ENTRYPOINT ["python", "./toxic_comments/slowapi/ask.py"]
+ 
 ### Question 16
 
 > **When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you**
@@ -341,7 +377,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 16 fill here ---
+To improve our code, we used a mix of tools and techniques. We used logging to get information on the code. We used VSCode debugging with breakpoints, and strategically placed print statements to extract valuable insights as well. Our debugging efforts were further augmented by the integration of continuous integration through Ruff to check for untracked mistakes and correct them. We did not use profiling as we focus on having as many parts working as possible of the ideal pipeline even if that was not optimized. Although we did not extensively use profiling, our goal was to ensure the pipeline's functionality before fine-tuning for efficiency. 
 
 ## Working in the cloud
 
@@ -358,7 +394,14 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following gcp services:
+
+* Cloud storage: storage of training/testin data and trained models
+* Container registry: Storage of built containers
+* Compute engine: Virtual machines For training of models
+* Cloud build: Building and deploying docker containers
+* Cloud run: Hosting of Application using our model. Automatic deployment of updates
+ vial cloud build
 
 ### Question 18
 
@@ -373,7 +416,11 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 18 fill here ---
+We used the compute engine to train our models. The machine we used was an n-1-standard-8 machine with one nvidia v100 in the zone eu-west-4a. We used the deep learning on linux image "Deep Learning VM with CUDA 12.1 M115" so we had some dependencies and the nvidia drivers pre-installed. To save on VM-costs we decided to use spot instances, as our machine would not have to run for long times and it would not be a big issue if it got stopped during one of our training runs.
+
+For training, we did not end up using our training container because we ran into authentication issues and it was
+simply faster to clone our repository than figuring out authentication. However, we tried our docker containers
+locally.
 
 ### Question 19
 
@@ -382,7 +429,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/bucket_cloud.png)
 
 ### Question 20
 
@@ -391,7 +438,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 20 fill here ---
+![my_image](figures/registry_cloud.png)
 
 ### Question 21
 
@@ -400,7 +447,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 21 fill here ---
+![my_image](figures/build_cloud.png)
 
 ### Question 22
 
@@ -416,7 +463,13 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 22 fill here ---
+We delpoyed our model using 2 approaches, one using a streamlit app and other other using a flask API. Both the methods deploy the model over gcp and have similar interface. The streamlit app offers a text input and then passes it to the predict fucntion to run inference, the output is the probabilites for each of the 6 classes - toxic, severe_toxic, obscene, threat, insult, identity_hate model is trained to classify for. The flask API does something similar with the text input, but also offers running inference on text files. The output is again probabilites of the 6 classes model is trained on. <br>
+
+Deploying models from both approaches followed standard procedure to make a .yaml file first and the creating a cloud build trigger over gcp. Both the trigger actions are associated with their respective .yaml files and the rest is taken care by the cloud. The template provided during the course is used works well after we edit the project ID.
+
+![flask](/reports/figures/flask.png) <br>
+![streamlit](/reports/figures/streamlit.png)
+
 
 ### Question 23
 
@@ -431,12 +484,12 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 23 fill here ---
+We implement checks towards data drifting as it can have an impact on the performances of the model as the frequency, and sometimes meaning, of some words can change over time thus yelding unexpected results by our toxic comment classifier. However, we did not implemented monitoring, although we took a look at the default metrics on Google cloud run of our streamlit application. We thought it would have been nice though to have some alerts that can monitor the amount of requests and utilization to make sure there won't be problems. Probably, however, the most important ones would have been for application errors.
 
 ### Question 24
 
 > **How many credits did you end up using during the project and what service was most expensive?**
->
+>  
 > Answer length: 25-100 words.
 >
 > Example:
@@ -445,7 +498,8 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 24 fill here ---
+$50 credits were alloted to use on gcp platform and towards the end of the project we are now left with $2.44. Overall we ended up using $47.56 while working on our project utilizing VM services and data storage. Most of our credits were utilized training the model and accesing the buckets for data storage. We ended up losing 23 and 18 credits over one weekend as we forgot to turn off the VM and that service accounted for the most expensive way we spent our credits. Given the scope of the project our estimate goal would have been to use around 8-10 credits including training and accesing data buckets. 
+
 
 ## Overall discussion of project
 
@@ -466,7 +520,15 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 25 fill here ---
+![scheme](/reports/figures/scheme.png)
+The diagram starts with our local setup, where we developed our application using PyTorch and PyTorch Transformer, adhering to the PyTorch Lightning paradigm. Locally, we managed the project-specific dependencies through Conda environments. The project follow the structure of the coockiecutter template.
+Whenever we push new code to GitHub and create a pull request to the main branch, GitHub Actions are triggered and validate the code using codecheck workflow, both for mac-os that ubuntu system. If formatting errors occur, ruff corrects and autocommits the changes required. After passing the tests, peer review is required before being able to merge in the main.
+Subsequently, completing the push of new code to the main branch triggers a cloud build that build and deploy the docker containers, which are then stored in the container registry.
+DVC manages data and model versions, which are stored in a GCP bucket. 
+The compute engine interacts with the GCP bucket, loading training data and saving the obtained model.
+End users interact with the application via API requests, wherein Cloud Run deploys the optimal model, executes interferences and return the results.
+
+
 
 ### Question 26
 
@@ -480,7 +542,7 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 26 fill here ---
+The first problem we had was that the code we used as a reference was using FastAI v1 which is now deprecated and moving it to v2 was not trivial. We actually found a second solution and we started from that. We had some struggles to make different services and different computers systems work together, although ultimately we found out how to deal with them. Another issue we had was when some modifications, althogh made in branches and worked, once merged in the main we had other parts that were not working anymore; we thus spent some time to fix this issues. We also spent some time working on the cloud because the feedback is difficult and when changing something on cloudbuild can't be checked locally so they require the change to be pushed before being able to evaluate it, as well as issues with IAM permissions. The main problem of the project was that the predictor was only working correctly with one word, the problem was in how the predict file was handling data inputs, after debugging and closely analyzing the code we found the issue and solved it. 
 
 ### Question 27
 
@@ -497,4 +559,10 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 27 fill here ---
+We all worked in finding the problem and organizing the work, we also all contributed to help each other and fix mistakes, therefore we'll just write below who first created a part of the project and so was more involved in that.
+
+s220278: Worked with the cloud in data storage, training, deploying it. Also added CI to the cloud and wandb. Created streamlit.
+s232449: Implemented the predict script and make dataset, added continuous integration and documentation.
+s233231: Implemented tests and coverage, pruning and quantization, and organized outputs and dvc.
+s222374: Implemented dockers and triggers. Worked on the deployment of Flask api. Implemented dvc. 
+s233499: Implemented model and training script, worked on training on the cloud. Created checks for data drifting.
