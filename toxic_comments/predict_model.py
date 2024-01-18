@@ -33,8 +33,8 @@ def tokenize_and_encode(tokenizer, comments):
             add_special_tokens=True,
             # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
-            max_length = 128, # This should use the config file for the make_data, but it is trouble some to reach..
-            pad_to_max_length = True,
+            max_length=128,  # This should use the config file for the make_data, but it is trouble some to reach..
+            pad_to_max_length=True,
             # Return attention mask to mask padded tokens
             return_attention_mask=True,
             # Return PyTorch tensors
