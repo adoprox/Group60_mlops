@@ -8,7 +8,7 @@ https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challeng
 The project aims to develop a classifier for identifying toxic comments, as part of the Kaggle Toxic Comment Classification Challenge. This classifier's primary function is to analyze individual comments and estimate the likelihood of each comment falling into one of seven categories. The categories include six specific classes: toxic, severe toxic, obscene, threat, insult, and identity hate, along with a seventh for general classification.
 
 ## Framework
-To achieve this, we are utilizing PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We are using the standard "bert-base-uncased".
+To achieve this, we are utilizing PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We are using the standard "bert-base-uncased". We also use Streamlit to create a simple web-app to use our solution. 
 
 
 ## Data
