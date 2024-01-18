@@ -20,7 +20,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 def train(config):
     # Initialize TensorBoard and wandb logger with specific save directory
     logger = pl.loggers.TensorBoardLogger(save_dir="./outputs/tensorboard_logs/", name="bert_toxic_classifier_logs")
-    wandb_logger = WandbLogger(save_dir="./outputs/wandb_logs/", log_model="all", project="bert_toxic_classifier")
+    wandb_logger = WandbLogger(save_dir="./outputs/wandb_logs/", project="bert_toxic_classifier")
 
     # log training device
     # device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
