@@ -129,7 +129,7 @@ s220278, s232449, s233231, s222374, s233499
 >
 > Answer:
 
-First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Lastly, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. (TOO SHORT)
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Then, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. Also, we used Wandb for logging purposes, to save metrics and variables so to check how our model was training. 
 
 ## Coding environment
 
@@ -154,6 +154,8 @@ We employed `pipreqs` for dependency management, automatically generating the li
 2. Execute `make requirements` to install all the dependencies necessary to execute the code.
 3. Optionally, users can run `make dev_requirements` to acquire the all the Developer Python Dependencies if needed.
 4. To be able to run the unit tests on the code, it is also necessary to execute `make test_requirements`.
+
+We also have a 'requirements_inference.txt'.
 
 ### Question 5
 
