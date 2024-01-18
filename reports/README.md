@@ -496,7 +496,7 @@ We implement checks towards data drifting as it can have an impact on the perfor
 >
 > Answer:
 
---- question 26 fill here ---
+The first problem we had was that the code we used as a reference was using FastAI v1 which is now deprecated and moving it to v2 was not trivial. We actually found a second solution and we started from that. We had some struggles to make different services and different computers systems work together, although ultimately we found out how to deal with them. Another issue we had was when some modifications, althogh made in branches and worked, once merged in the main we had other parts that were not working anymore; we thus spent some time to fix this issues. We also spent some time working on the cloud because the feedback is difficult and when changing something on cloudbuild can't be checked locally so they require the change to be pushed before being able to evaluate it, as well as issues with IAM permissions. The main problem of the project was that the predictor was only working correctly with one word, the problem was in how the predict file was handling data inputs, after debugging and closely analyzing the code we found the issue and solved it. 
 
 ### Question 27
 
