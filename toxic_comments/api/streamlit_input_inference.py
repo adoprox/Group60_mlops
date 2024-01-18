@@ -10,7 +10,8 @@ def load_config():
     """Decorator to cache loaded config. Avoids errors of hydra complaining about reinitialization."""
     with initialize("../models/config"):
         return compose(
-            config_name="default.yaml", overrides=["predict.checkpoint_path=models/production/production_quantized.ckpt"]
+            config_name="default.yaml",
+            overrides=["predict.checkpoint_path=models/production/production_quantized.ckpt"],
         )
 
 
