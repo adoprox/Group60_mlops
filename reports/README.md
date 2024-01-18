@@ -455,7 +455,7 @@ We delpoyed our model using 2 approaches, one using a streamlit app and other ot
 Deploying models from both approaches followed standard procedure to make a .yaml file first and the creating a cloud build trigger over gcp. Both the trigger actions are associated with their respective .yaml files and the rest is taken care by the cloud. The template provided during the course is used works well after we edit the project ID.
 
 ![flask](/reports/figures/flask.png) <br>
-![streamlit]()
+![streamlit](/reports/figures/streamlit.png)
 
 
 ### Question 23
