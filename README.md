@@ -81,7 +81,7 @@ git clone https://github.com/adoprox/Group60_mlops.git
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
 
-#### Known issues
+### Known issues
 
 #### DVC fails to pull
 

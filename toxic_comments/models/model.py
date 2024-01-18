@@ -32,7 +32,6 @@ class ToxicCommentClassifier(pl.LightningModule):
 
         super().__init__()
 
-        self.save_hyperparameters()
         self.batch_size = batch_size
         self.lr = lr
         self.use_short_data = use_short_data
