@@ -8,7 +8,7 @@ https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challeng
 The project aims to develop a classifier for identifying toxic comments, as part of the Kaggle Toxic Comment Classification Challenge. This classifier's primary function is to analyze individual comments and estimate the likelihood of each comment falling into one of seven categories. The categories include six specific classes: toxic, severe toxic, obscene, threat, insult, and identity hate, along with a seventh for general classification.
 
 ## Framework
-To achieve this, we are utilizing a combination of FastAi and PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We chose to use pytorch-lightning as a high-level framework to reduce boilerplate code that we would have to write. We also use Streamlit to create a simple web-app to use our solution.
+To achieve this, we are utilizing a combination of FastAi and PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We chose to use pytorch-lightning as a high-level framework to reduce boilerplate code that we would have to write. We also use Streamlit to create a simple web-app to use our solution. 
 
 ## Data
 Our data source is the Kaggle Toxic Comment Classification dataset, which comprises various comments sourced from Wikipedia. Each comment in this dataset is tagged with one or more labels corresponding to the six toxic categories. The dataset's structure and labels allow for a comprehensive training regime, catering to our classifier's need for diverse and complex examples. Interested parties can access the dataset through the provided Kaggle link: [Toxic comment classification challenge data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
@@ -167,4 +167,4 @@ You can also specify the model to use by adding the parameter:
 _n.b. The '=' is a special character, if it is present in the path, it needs to be preceded by the special character '\'_
 
 ## Use Streamlit web app
-To test our solution and classify a comment you can access the Streamlit web app at: https://inference-streamlit-kjftsv3ocq-ez.a.run.app/
+To test our solution and classify a comment you can access the Streamlit web app at: https://inference-streamlit-kjftsv3ocq-ez.a.run.app/ 
