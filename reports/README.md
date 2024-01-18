@@ -244,7 +244,11 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 10 fill here ---
+Yes, we implemented data version control, we tested both google drive and google cloud storage as remotes. In particular, it helped us to easily disseminate our training, testing data and models to different machines.
+
+For the scope of our model, the version control part of DVC was probably not as important, as our project was not large enough to go through several iterations of our data.
+
+However, we faced severe difficulties in integrating dvc into our github actions for model and data testing. The reason is, that neither authentication with google drive is seemingly not possible in an automated manner, and dvc-gs expects a credential file, but we didn't find a way to supply in Github actions.
 
 ### Question 11
 
@@ -262,10 +266,22 @@ We used both branches and pull requests. We created a list of issues with all th
 
 --- question 11 fill here ---
 
+For CI we are automatically checking code smells using ruff, as well as automatically formatting the code using Github actions. Due to authentication problems mentioned above, we were unable to run the majority of our tests in Github actions.
+
+For continuous delivery, we set up three containers that get automatically built and some are also automatically deployed. The three containers we have are: one container for training, one with a streamlit app over prediction, and one hosting an API with flask.
+
+Model data necessary for running inference is pulled from a cloud storage bucket. No automatic update of the models included in the containers is set up to avoid accidentally using a bad model in production due to a new training run that used bad parameters.
+
+The streamlit container automatically gets deployed to google cloud run after is has been built and can be reached using the URL: <https://inference-streamlit-kjftsv3ocq-ez.a.run.app>.
+
 ## Running code and tracking experiments
 
 > In the following section we are interested in learning more about the experimental setup for running your code and
 > especially the reproducibility of your experiments.
+
+For reproduceability and tracking of experiments we are using model configurations and wandb for logging.
+
+Whenever a model is being trained, the training logs containing the model configuration, training configuration, loss, performance, etc. get sent to wandb. This allows us to keep track of how a model performed with a given configuration. 
 
 ### Question 12
 
@@ -279,7 +295,9 @@ We used both branches and pull requests. We created a list of issues with all th
 >
 > Answer:
 
---- question 12 fill here ---
+We use hydra to load our configuration files for the model and training. Hydra allows us to pass command-line arguments to override the configuration. Any overrides also get logged using wandb. For a default run configuration, no overrides have to be made.
+
+Example execution: python3 ./toxic_comments/train_model.py param_to_override_optional="some value"
 
 ### Question 13
 
