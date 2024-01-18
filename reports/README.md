@@ -399,7 +399,11 @@ We used the following gcp services:
 >
 > Answer:
 
---- question 18 fill here ---
+We used the compute engine to train our models. The machine we used was an n-1-standard-8 machine with one nvidia v100 in the zone eu-west-4a. We used the deep learning on linux image "Deep Learning VM with CUDA 12.1 M115" so we had some dependencies and the nvidia drivers pre-installed. To save on VM-costs we decided to use spot instances, as our machine would not have to run for long times and it would not be a big issue if it got stopped during one of our training runs.
+
+For training, we did not end up using our training container because we ran into authentication issues and it was
+simply faster to clone our repository than figuring out authentication. However, we tried our docker containers
+locally.
 
 ### Question 19
 
