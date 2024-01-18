@@ -520,6 +520,14 @@ $50 credits were alloted to use on gcp platform and towards the end of the proje
 >
 > Answer:
 
+![scheme](/reports/figures/scheme.png)
+The diagram starts with our local setup, where we developed our application using PyTorch and PyTorch Transformer, adhering to the PyTorch Lightning paradigm. Locally, we managed the project-specific dependencies through Conda environments. The project follow the structure of the coockiecutter template.
+Whenever we push new code to GitHub and create a pull request to the main branch, GitHub Actions are triggered and validate the code using codecheck workflow, both for mac-os that ubuntu system. If formatting errors occur, ruff corrects and autocommits the changes required. After passing the tests, peer review is required before being able to merge in the main.
+Subsequently, completing the push of new code to the main branch triggers a cloud build that build and deploy the docker containers, which are then stored in the container registry.
+DVC manages data and model versions, which are stored in a GCP bucket. 
+The compute engine interacts with the GCP bucket, loading training data and saving the obtained model.
+End users interact with the application via API requests, wherein Cloud Run deploys the optimal model, executes interferences and return the results.
+
 
 
 ### Question 26
