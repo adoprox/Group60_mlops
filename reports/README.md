@@ -452,7 +452,7 @@ We implement checks towards data drifting as it can have an impact on the perfor
 ### Question 24
 
 > **How many credits did you end up using during the project and what service was most expensive?**
->
+>  
 > Answer length: 25-100 words.
 >
 > Example:
@@ -460,6 +460,7 @@ We implement checks towards data drifting as it can have an impact on the perfor
 > *costing the most was ... due to ...*
 >
 > Answer:
+$50 credits were alloted to use on gcp platform and towards the end of the project we are now left with $2.44. Overall we ended up using $47.56 while working on our project utilizing VM services and data storage. Most of our credits were utilized training the model and accesing the buckets for data storage. We ended up losing 23 and 18 credits over one weekend as we forgot to turn off the VM and that service accounted for the most expensive way we spent our credits. Given the scope of the project our estimate goal would have been to use around 8-10 credits including training and accesing data buckets. 
 
 --- question 24 fill here ---
 
@@ -482,7 +483,7 @@ We implement checks towards data drifting as it can have an impact on the perfor
 >
 > Answer:
 
---- question 25 fill here ---
+
 
 ### Question 26
 
@@ -518,5 +519,5 @@ We all worked in finding the problem and organizing the work, we also all contri
 s220278: Worked with the cloud in data storage, training, deploying it. Also added CI to the cloud and wandb. Created streamlit.
 s232449: Implemented the predict script and make dataset, added continuous integration and documentation.
 s233231: Implemented tests and coverage, pruning and quantization, and organized outputs and dvc.
-s222374: Implemented dockers and triggers. Worked on the deployment on a Flask api.
+s222374: Implemented dockers and triggers. Worked on the deployment of Flask api. Implemented dvc. 
 s233499: Implemented model and training script, worked on training on the cloud. Created checks for data drifting.
