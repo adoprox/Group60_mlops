@@ -147,6 +147,7 @@ First, we utilized the PyTorch-Transformers framework (now known as pytorch_pret
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+
 We employed `pipreqs` for dependency management, automatically generating the list of dependencies and recording them in the `requirements.txt` file. To replicate our entire development environment, users should follow these steps:
 
 1. Run `make create_environment` to create a conda environment named after the project.
