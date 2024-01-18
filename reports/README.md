@@ -460,9 +460,9 @@ We implement checks towards data drifting as it can have an impact on the perfor
 > *costing the most was ... due to ...*
 >
 > Answer:
+
 $50 credits were alloted to use on gcp platform and towards the end of the project we are now left with $2.44. Overall we ended up using $47.56 while working on our project utilizing VM services and data storage. Most of our credits were utilized training the model and accesing the buckets for data storage. We ended up losing 23 and 18 credits over one weekend as we forgot to turn off the VM and that service accounted for the most expensive way we spent our credits. Given the scope of the project our estimate goal would have been to use around 8-10 credits including training and accesing data buckets. 
 
---- question 24 fill here ---
 
 ## Overall discussion of project
 
