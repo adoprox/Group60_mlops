@@ -398,7 +398,7 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/bucket_cloud.png)
 
 ### Question 20
 
