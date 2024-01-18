@@ -26,7 +26,7 @@ def train(config):
     # device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     wandb.log({"device": str(device)})
 
-    wandb.log({"configuration": OmegaConf.to_yaml(config)})
+    wandb.config.update(OmegaConf.to_container(config))
 
     # Set seed
     torch.manual_seed(config.train.seed)
