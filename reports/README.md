@@ -377,7 +377,14 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following gcp services:
+
+* Cloud storage: storage of training/testin data and trained models
+* Container registry: Storage of built containers
+* Compute engine: Virtual machines For training of models
+* Cloud build: Building and deploying docker containers
+* Cloud run: Hosting of Application using our model. Automatic deployment of updates
+ vial cloud build
 
 ### Question 18
 
