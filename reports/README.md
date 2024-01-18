@@ -129,7 +129,7 @@ s220278, s232449, s233231, s222374, s233499
 >
 > Answer:
 
-First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Then, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. Also, we used Wandb for logging purposes, to save metrics and variables so to check how our model was training. 
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Then, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. Also, we used Wandb for logging purposes, to save metrics and variables so to check how our model was training. We also use Streamlit to create a simple web-app to use our solution. 
 
 ## Coding environment
 
