@@ -9,7 +9,7 @@ prediction_labels = ["toxic","severe_toxic","obscene","threat","insult","identit
 
 st.title("Check if a comment is toxic")
 
-st.write(f'This little application uses a BERT model trained on the toxic comment dataset to check if the text in the text field is toxic or not.')
+st.write('This little application uses a BERT model trained on the toxic comment dataset to check if the text in the text field is toxic or not.')
 
 st.write(f'It will predict the probability of the text being in each of the following classes: {prediction_labels}')
 
