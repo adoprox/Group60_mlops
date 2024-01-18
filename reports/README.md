@@ -170,8 +170,8 @@ We also have a 'requirements_inference.txt'.
 > *experiments.*
 > Answer:
 
-From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
-Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. (TO FIX)
+From the cookiecutter template we have filled out with '.csv' files the data folder in the raw subfolder, and the tokenized data is created in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder. Also there the api files are stored.
+Since visualization was not incorporated into our project, the respective folder was removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. 
 
 ### Question 6
 
