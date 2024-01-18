@@ -56,7 +56,6 @@ def tokenize_and_encode(tokenizer, comments):
     return input_ids, attention_masks
 
 
-
 def predict(inputs, tokenizer, model, device):
     """Make predictions using the trained model.
 
@@ -147,13 +146,12 @@ def load_model(config):
 
     model.to(device)
 
+
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
 
     return tokenizer, model, device
-
-
 
 
 if __name__ == "__main__":
