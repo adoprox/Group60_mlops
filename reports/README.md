@@ -57,7 +57,7 @@ end of the project.
 * [✓] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
 * [✓] Add a model file and a training script and get that running
 * [✓] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project
+* [✓] Remember to comply with good coding practices (`pep8`) while doing the project
 * [✓] Do a bit of code typing and remember to document essential parts of your code
 * [✓] Setup version control for your data or part of your data
 * [✓] Construct one or multiple docker files for your code
@@ -78,17 +78,17 @@ end of the project.
 * [✓] Get some continuous integration running on the github repository
 * [✓] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
 * [✓] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
+* [✓] Get your model training in GCP using either the Engine or Vertex AI
+* [✓] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
-* [ ] Deploy your model in GCP using either Functions or Run as the backend
+* [✓] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting
+* [✓] Check how robust your model is towards data drifting
 * [ ] Setup monitoring for the system telemetry of your deployed model
 * [ ] Setup monitoring for the performance of your deployed model
-* [ ] If applicable, play around with distributed data loading
+* [✓] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
 * [✓] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
@@ -264,8 +264,6 @@ However, we faced severe difficulties in integrating dvc into our github actions
 >
 > Answer:
 
---- question 11 fill here ---
-
 For CI we are automatically checking code smells using ruff, as well as automatically formatting the code using Github actions. Due to authentication problems mentioned above, we were unable to run the majority of our tests in Github actions.
 
 For continuous delivery, we set up three containers that get automatically built and some are also automatically deployed. The three containers we have are: one container for training, one with a streamlit app over prediction, and one hosting an API with flask.
@@ -359,7 +357,7 @@ Example execution: python3 ./toxic_comments/train_model.py param_to_override_opt
 >
 > Answer:
 
---- question 16 fill here ---
+To improve our code, we used a mix of tools and techniques. We used logging to get information on the code. We used VSCode debugging with breakpoints, and strategically placed print statements to extract valuable insights as well. Our debugging efforts were further augmented by the integration of continuous integration through Ruff to check for untracked mistakes and correct them. We did not use profiling as we focus on having as many parts working as possible of the ideal pipeline even if that was not optimized. Although we did not extensively use profiling, our goal was to ensure the pipeline's functionality before fine-tuning for efficiency. 
 
 ## Working in the cloud
 
