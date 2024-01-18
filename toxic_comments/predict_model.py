@@ -184,9 +184,14 @@ def load_model(config):
         batch_size=32,
         num_workers=0,
     )
-    calibrate_model(model, calibration_dataloader)
+    calibrate_model(model, calibration_dataloader, device)
     set_embedding_qconfig(model)
+
+    # send model to cpu for quantization
+    model = model.to("cpu")
     model_quantized = torch.quantization.convert(model, inplace=False)
+    model = model.to(device)
+    
     # compute the ids and attention_mask for the model
     bert_model_name = config.model.bert_model_name
     tokenizer = BertTokenizer.from_pretrained(bert_model_name, do_lower_case=True)
@@ -194,11 +199,15 @@ def load_model(config):
     return tokenizer, model_quantized, device
 
 
-def calibrate_model(model, data_loader):
+def calibrate_model(model, data_loader, device):
     model.eval()
     with torch.no_grad():
         for batch in data_loader:
             input_ids, attention_mask = batch
+            
+            input_ids = input_ids.to(device)
+            attention_mask = attention_mask.to(device)
+
             # Pass both input_ids and attention_mask to the model
             model(input_ids, attention_mask=attention_mask)
 
