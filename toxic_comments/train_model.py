@@ -67,6 +67,7 @@ def train(config):
 
     # Train the model
     trainer.fit(model)
+
     # save logged data
     logger.save()
     # Test the model

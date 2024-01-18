@@ -14,7 +14,7 @@ train:
 
 predict:
   checkpoint_path: models/bert-toxic-classifier/epoch=1-val_loss=0.15.ckpt
-
+  
 # In config_train.yaml
 hydra:
   run:
