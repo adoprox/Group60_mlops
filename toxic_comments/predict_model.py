@@ -7,6 +7,7 @@ import sys
 import pandas as pd
 import numpy as np
 
+
 # Token and Encode Function
 def tokenize_and_encode(tokenizer, comments):
     """Tokenize and encode comments using the BERT tokenizer.
@@ -31,10 +32,10 @@ def tokenize_and_encode(tokenizer, comments):
 
         # Tokenize and encode the comment using the BERT tokenizer
         encoded_dict = tokenizer.encode_plus(
-        comment,
-        # Add special tokens like [CLS] and [SEP]
-        add_special_tokens=True,
-        # Pad the comment to 'max_length' with zeros if needed
+            comment,
+            # Add special tokens like [CLS] and [SEP]
+            add_special_tokens=True,
+            # Pad the comment to 'max_length' with zeros if needed
             # Depricated but other does not seem to work..
             padding="longest",
             # Return attention mask to mask padded tokens
