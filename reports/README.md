@@ -268,8 +268,9 @@ However, we faced severe difficulties in integrating dvc into our github actions
 > Answer:
 
 For CI we are automatically checking code smells using ruff, as well as automatically formatting the code using Github actions. Due to authentication problems mentioned above, we were unable to run the majority of our tests in Github actions.
+We also test the Python version and the requirements and we cache pip dependencies. All the tests are computed both for Ubuntu and macOS systems.
 
-For continuous delivery, we set up three containers that get automatically built and some are also automatically deployed. The three containers we have are: one container for training, one with a streamlit app over prediction, and one hosting an API with flask.
+For continuous delivery, we set up three containers that get automatically built and some are also automatically deployed. The three containers we have are one container for training, one with a streamlit app over prediction, and one hosting an API with Flask.
 
 Model data necessary for running inference is pulled from a cloud storage bucket. No automatic update of the models included in the containers is set up to avoid accidentally using a bad model in production due to a new training run that used bad parameters.
 
