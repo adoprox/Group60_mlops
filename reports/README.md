@@ -129,7 +129,7 @@ s220278, s232449, s233231, s222374, s233499
 >
 > Answer:
 
-First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Lastly, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. (TOO SHORT)
+First, we utilized the PyTorch-Transformers framework (now known as pytorch_pretrained_bert). This framework, developed by HuggingFace, played a crucial role in loading the pre-trained model (bert-base-uncased) and its corresponding tokenizer. The tokenizer object allows the conversion from character strings to tokens understood by our specific model. Subsequently, we adopted the high-level framework PyTorch Lightning to streamline our model implementation and training code, benefiting from its organized and efficient structure. Then, we employed Hydra for parameter configuration management, allowing us to easily adjust and experiment with various model hyperparameters. Also, we used Wandb for logging purposes, to save metrics and variables so to check how our model was training. We also use Streamlit to create a simple web-app to use our solution. 
 
 ## Coding environment
 
@@ -147,12 +147,15 @@ First, we utilized the PyTorch-Transformers framework (now known as pytorch_pret
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+
 We employed `pipreqs` for dependency management, automatically generating the list of dependencies and recording them in the `requirements.txt` file. To replicate our entire development environment, users should follow these steps:
 
 1. Run `make create_environment` to create a conda environment named after the project.
 2. Execute `make requirements` to install all the dependencies necessary to execute the code.
 3. Optionally, users can run `make dev_requirements` to acquire the all the Developer Python Dependencies if needed.
 4. To be able to run the unit tests on the code, it is also necessary to execute `make test_requirements`.
+
+We also have a 'requirements_inference.txt'.
 
 ### Question 5
 
@@ -167,8 +170,8 @@ We employed `pipreqs` for dependency management, automatically generating the li
 > *experiments.*
 > Answer:
 
-From the cookiecutter template we have filled out the data folder with '.csv' files in the raw subfolder, and the tokenized data resides in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder.
-Since visualization was not incorporated into our project, the respective folders were removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. (TO FIX)
+From the cookiecutter template we have filled out with '.csv' files the data folder in the raw subfolder, and the tokenized data is created in the processed subfolder. The notebook folder serves as a repository for the original project notebook, which was used as a reference. Additionally, we organized the reports and test folders to contain this report and the unit tests, respectively. All the source code is located in the 'toxic_comments' folder, with the model file residing in the models subfolder and the data processor in the data subfolder. The training and prediction files are also stored in the 'toxic_comments' folder. Also there the api files are stored.
+Since visualization was not incorporated into our project, the respective folder was removed. Lastly, we found it necessary to include the dockerfiles folder to store Docker files for prediction and training, and the .github/workflows folder contains files defining GitHub actions within the project repository. 
 
 ### Question 6
 
@@ -378,7 +381,14 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following gcp services:
+
+* Cloud storage: storage of training/testin data and trained models
+* Container registry: Storage of built containers
+* Compute engine: Virtual machines For training of models
+* Cloud build: Building and deploying docker containers
+* Cloud run: Hosting of Application using our model. Automatic deployment of updates
+ vial cloud build
 
 ### Question 18
 
@@ -393,7 +403,11 @@ To improve our code, we used a mix of tools and techniques. We used logging to g
 >
 > Answer:
 
---- question 18 fill here ---
+We used the compute engine to train our models. The machine we used was an n-1-standard-8 machine with one nvidia v100 in the zone eu-west-4a. We used the deep learning on linux image "Deep Learning VM with CUDA 12.1 M115" so we had some dependencies and the nvidia drivers pre-installed. To save on VM-costs we decided to use spot instances, as our machine would not have to run for long times and it would not be a big issue if it got stopped during one of our training runs.
+
+For training, we did not end up using our training container because we ran into authentication issues and it was
+simply faster to clone our repository than figuring out authentication. However, we tried our docker containers
+locally.
 
 ### Question 19
 
@@ -470,9 +484,9 @@ We implement checks towards data drifting as it can have an impact on the perfor
 > *costing the most was ... due to ...*
 >
 > Answer:
+
 $50 credits were alloted to use on gcp platform and towards the end of the project we are now left with $2.44. Overall we ended up using $47.56 while working on our project utilizing VM services and data storage. Most of our credits were utilized training the model and accesing the buckets for data storage. We ended up losing 23 and 18 credits over one weekend as we forgot to turn off the VM and that service accounted for the most expensive way we spent our credits. Given the scope of the project our estimate goal would have been to use around 8-10 credits including training and accesing data buckets. 
 
---- question 24 fill here ---
 
 ## Overall discussion of project
 
