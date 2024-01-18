@@ -4,13 +4,17 @@ on:
   pull_request:
     branches: [ master, main ]
   push:
-    branches: [60-fix-testing-workflow]
+    branches: [63-add-multisystem-testing]
 
 
 jobs:
   Codecheck:
 
-    runs-on: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    strategy:
+     matrix:
+       os: [ubuntu-latest, macos-latest]
+
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
       contents: write
