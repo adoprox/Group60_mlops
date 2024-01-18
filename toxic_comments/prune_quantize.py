@@ -4,6 +4,7 @@ from toxic_comments.models.model import ToxicCommentClassifier
 import hydra
 import torch.nn.utils.prune as prune
 from pathlib import Path
+import re
 
 @hydra.main(version_base="1.3", config_name="default.yaml", config_path="models/config")
 def prune_and_quantize(config):
@@ -56,13 +57,15 @@ def prune_and_quantize(config):
     set_embedding_qconfig(model)
     model_quantized = torch.quantization.convert(model, inplace=False)
 
+    lightning_version = get_lightning_version_from_requirements(base_path)
+    
     # Create the checkpoint dictionary
     checkpoint = {
         'state_dict': model_quantized.state_dict(),
-        'hyper_parameters': model_quantized.hparams,  # Assuming hyperparameters are stored in model.hparams
-        # Include any other keys that PyTorch Lightning expects
+        'hyper_parameters': model_quantized.hparams, 
+        
     }
-    checkpoint['pytorch-lightning_version'] = '2.1.2'
+    checkpoint['pytorch-lightning_version'] = lightning_version
 
     # Save the checkpoint
     torch.save(checkpoint, 'models/production/production_quantized.ckpt')
@@ -100,9 +103,19 @@ def create_calibration_dataloader(dataset, calibration_split=0.1, batch_size=32,
     )
     return calibration_dataloader
 
+def get_lightning_version_from_requirements(base_path):
+    version = None
+    requirements_path = base_path / 'requirements.txt'
+    with open(requirements_path, 'r') as file:
+        for line in file:
+            # Look for a line with pytorch-lightning and its version
+            match = re.search(r'pytorch_lightning==([\d\.]+)', line)
+            if match:
+                version = match.group(1)
+                break
+    return version
+
 
 if __name__ == "__main__":
     
     prune_and_quantize()
-    
-    
