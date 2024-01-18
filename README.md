@@ -8,7 +8,8 @@ https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challeng
 The project aims to develop a classifier for identifying toxic comments, as part of the Kaggle Toxic Comment Classification Challenge. This classifier's primary function is to analyze individual comments and estimate the likelihood of each comment falling into one of seven categories. The categories include six specific classes: toxic, severe toxic, obscene, threat, insult, and identity hate, along with a seventh for general classification.
 
 ## Framework
-To achieve this, we are utilizing a combination of FastAi and PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We chose to use pytorch-lightning as a high-level framework to reduce boilerplate code that we would have to write. We also use Streamlit to create a simple web-app to use our solution. 
+To achieve this, we are utilizing PyTorch-Transformers (now known as pytorch_pretrained_bert) frameworks. PyTorch-Transformers, a product of HuggingFace, is instrumental in loading the pretrained model and tokenizer. We are using the standard "bert-base-uncased".
+
 
 ## Data
 Our data source is the Kaggle Toxic Comment Classification dataset, which comprises various comments sourced from Wikipedia. Each comment in this dataset is tagged with one or more labels corresponding to the six toxic categories. The dataset's structure and labels allow for a comprehensive training regime, catering to our classifier's need for diverse and complex examples. Interested parties can access the dataset through the provided Kaggle link: [Toxic comment classification challenge data](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data)
@@ -81,7 +82,7 @@ git clone https://github.com/adoprox/Group60_mlops.git
 dvc pull
 This creates a new directory with all the files needed for the model to work. 
 
-#### Known issues
+### Known issues
 
 #### DVC fails to pull
 
@@ -111,6 +112,7 @@ The please dvc pull from the google cloud remote: `dvc pull -r gcloud-storage`
 ### Commands to build docker containers
 1. Training container: `docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest`
 2. Prediction container: `docker build -f dockerfiles/predict_model.dockerfile . -t predict:latest`
+3. Inference container: `docker build -f dockerfiles/inference_streamlit.dockerfile . -t inference:latest`
 Predict is still under work
 
 ### Commands to run docker containers
@@ -138,6 +140,13 @@ All operations should be done in region eu-west-4 and zone eu-west-4a (if fine-g
 
 Any traing, testing, validation, prediction data should be added to the bucket group_60_data.
 Any trained models should be added to the bucket group_60_models.
+
+### Creating inference instance
+
+The following command can be used to create a new inference service based on the latest version of the streamlit inference container:
+`gcloud run deploy inference-streamlit --image gcr.io/propane-facet-410709/inference-streamlit:latest --platform managed --region europe-west4 --allow-unauthenticated --port 8501`
+
+Additionally, a new instance will be deployed via a trigger whenever a push to main happens.
 
 ## Training the model on a compute instance
 

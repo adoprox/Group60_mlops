@@ -1,0 +1,23 @@
+steps:
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', 'gs://group_60_models/production/production_quantized.ckpt', '/workspace/models/production/production_quantized.ckpt']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', './dockerfiles/inference_streamlit.dockerfile', '-t', 'gcr.io/$PROJECT_ID/inference-streamlit:latest', '/workspace']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/inference-streamlit:latest']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'inference-streamlit'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/inference-streamlit:latest'
+  - '--region'
+  - 'europe-west4'
+  - '--port'
+  - '8501'
