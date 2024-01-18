@@ -5,13 +5,16 @@ from toxic_comments.predict_model import predict, load_model
 from hydra import initialize, compose
 from datetime import datetime
 
-prediction_labels = ["toxic","severe_toxic","obscene","threat","insult","identity_hate"]
+prediction_labels = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
 
 st.title("Check if a comment is toxic")
 
-st.write('This little application uses a BERT model trained on the toxic comment dataset to check if the text in the text field is toxic or not.')
+st.write(
+    "This little application uses a BERT model trained on the toxic comment dataset to check if the text in the text field is toxic or not."
+)
 
-st.write(f'It will predict the probability of the text being in each of the following classes: {prediction_labels}')
+st.write(f"It will predict the probability of the text being in each of the following classes: {prediction_labels}")
+
 
 @st.cache_resource
 def load_config():
@@ -42,7 +45,7 @@ if st.button(label="Run inference"):
     st.header("Results: ")
     prediction = predict(input, tokenizer, model, device)
     output_with_labels = zip(prediction_labels, prediction[0][0])
-    results_formatted = [f'* {label}: {p*100:.1f}%' for label, p in output_with_labels]
+    results_formatted = [f"* {label}: {p*100:.1f}%" for label, p in output_with_labels]
 
     for line in results_formatted:
         st.markdown(line)
