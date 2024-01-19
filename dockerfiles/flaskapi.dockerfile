@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y nano
 COPY requirements_inference.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
-COPY models/production/model.ckpt models/production/model.ckpt
-
+COPY models/production/production_quantized.ckpt models/production/production_quantized.ckpt
 RUN pip install -r requirements.txt 
 RUN pip install . --no-deps 
 
