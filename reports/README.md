@@ -485,7 +485,7 @@ Deploying models from both approaches followed standard procedure to make a .yam
 >
 > Answer:
 
-We implement checks towards data drifting as it can have an impact on the performances of the model as the frequency, and sometimes meaning, of some words can change over time thus yelding unexpected results by our toxic comment classifier. However, we did not implemented monitoring, although we took a look at the default metrics on Google cloud run of our streamlit application. We thought it would have been nice though to have some alerts that can monitor the amount of requests and utilization to make sure there won't be problems. Probably, however, the most important ones would have been for application errors.
+We played around with data drifting as it can have an impact on the performances of the model as the frequency, and sometimes meaning, of some words can change over time thus yelding unexpected results by our toxic comment classifier. However, we did not implemented monitoring, although we took a look at the default metrics on Google cloud run of our streamlit application. We thought it would have been nice though to have some alerts that can monitor the amount of requests and utilization to make sure there won't be problems. Probably, however, the most important ones would have been for application errors. Ultimately we decided not to merge to code for data driting to the main branch but the html reports and tests can be seen in the data_drift branch.
 
 ### Question 24
 
