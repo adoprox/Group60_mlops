@@ -27,8 +27,20 @@ The directory structure of the project looks like this:
 ├── README.md            <- The top-level README for developers using this project.
 ├── data
 │   ├── processed        <- The final, canonical data sets for modeling.
-│   └── raw              <- The original, immutable data dump.
-│
+│   |   ├── train.pt
+│   |   ├── val.pt
+│   |   └── test.pt   
+│   └── raw  <- The original, immutable data dump. (we only use train.csv)
+│       ├── train.csv
+│       ├── sample_submission.csv
+│       ├── test_labels.csv
+│       └── test.csv
+├── dockerfiles               <- Dockerfiles to build images
+│   ├── flaskapi.dockerfile
+│   ├── inference_streamlit.dockerfile
+│   ├── predict_model.dockerfile
+│   └── train_model.dockerfile
+│  
 ├── docs                 <- Documentation folder
 │   │
 │   ├── index.md         <- Homepage for your documentation
@@ -40,10 +52,15 @@ The directory structure of the project looks like this:
 ├── models               <- Trained and serialized models, model predictions, or model summaries
 │
 ├── notebooks            <- Jupyter notebooks.
+│   └── bert-with-fastai-example.ipynb
 │
 ├── pyproject.toml       <- Project configuration file
 │
-├── reports              <- Generated analysis as HTML, PDF, LaTeX, etc.
+├── reports              <- Generated analysisbucketbucketbucketbucket as HTML, PDF, LaTeX, etc.
+│   ├── README.md
+│   │
+│   ├── report.py
+│   │
 │   └── figures          <- Generated graphics and figures to be used in reporting
 │
 ├── requirements.txt     <- The requirements file for reproducing the analysis environment
@@ -59,14 +76,17 @@ The directory structure of the project looks like this:
 ├── toxic_comments  <- Source code for use in this project.
 │   │
 │   ├── __init__.py      <- Makes folder a Python module
+│   │ 
+│    ├── api              <- Script to run streamlit api
+│    |    └── streamlit_input_inference.py      
 │   │
-│   ├── data             <- Scripts to download or generate data
+│    ├── data             <- Scripts to download or generate data
 │   │   ├── __init__.py
 │   │   └── make_dataset.py
 │   │
 │   ├── models           <- model implementations, training script and prediction script
 │   │   ├── __init__.py
-│   │   ├── model.py
+│   │   └── model.py
 │   │
 │   ├── visualization    <- Scripts to create exploratory and results oriented visualizations
 │   │   ├── __init__.py
