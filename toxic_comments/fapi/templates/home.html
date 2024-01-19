@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Template - Text and File Input</title>
+</head>
+<body>
+    <h1>Group 60 flask api for inference</h1>
+
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('upload') }}">
+        <label for="text_input">Enter Text or toxic comment:</label>
+        <input type="text" id="text_input" name="text_input" required>
+        
+        <br>
+
+        <label for="file_input">Upload File filled with toxic comments:</label>
+        <input type="file" id="file_input" name="file_input" accept=".txt, .pdf, .docx">
+
+        <br><br>
+
+        <button type="submit">6 ways to understand what you just said</button>
+    </form>
+</body>
+</html>

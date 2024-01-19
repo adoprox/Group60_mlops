@@ -9,3 +9,4 @@ transformers==4.36.2
 tensorboard==2.15.1
 wandb==0.16.2
 streamlit>=1.30.0
+flask==3.0.0

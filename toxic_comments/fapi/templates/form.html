@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Results</title>
+</head>
+<body>
+    <h1>Formatted Results:</h1>
+    <ul>
+        {% for result in results_formatted %}
+            <li>
+                <strong>Input Line:</strong> {{ result.input_line }}<br>
+                <strong>Labels:</strong> {% for label in result.labels %}{{ label }}{% if not loop.last %}, {% endif %}{% endfor %}<br>
+                <strong>Probabilities:</strong> {% for probability in result.probabilities %}{{ probability*100:.1f }}%{% if not loop.last %}, {% endif %}{% endfor %}<br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
