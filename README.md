@@ -27,21 +27,21 @@ The directory structure of the project looks like this:
 ├── README.md            <- The top-level README for developers using this project.
 ├── data
 │   ├── processed        <- The final, canonical data sets for modeling.
-|   |   ├── train.pt
-|   |   ├── val.pt
-|   |   └── test.pt   
+│   |   ├── train.pt
+│   |   ├── val.pt
+│   |   └── test.pt   
 │   └── raw  <- The original, immutable data dump. (we only use train.csv)
-|       ├── train.csv
-|       ├── sample_submission.csv
-|       ├── test_labels.csv
-|       └── test.csv   
-|       
-|
+│       ├── train.csv
+│       ├── sample_submission.csv
+│       ├── test_labels.csv
+│       └── test.csv   
+│       
+│
 ├── dockerfiles          <- Dockerfiles to build images
-|   ├── flaskapi.dockerfile
-|   ├── inference_streamlit.dockerfile
-|   ├── predict_model.dockerfile
-|   └── train_model.dockerfile
+│   ├── flaskapi.dockerfile
+│   ├── inference_streamlit.dockerfile
+│   ├── predict_model.dockerfile
+│   └── train_model.dockerfile
 │
 ├── docs                 <- Documentation folder
 │   │
