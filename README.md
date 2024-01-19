@@ -77,10 +77,10 @@ The directory structure of the project looks like this:
 │   │
 │   ├── __init__.py      <- Makes folder a Python module
 │   │ 
-│    ├── api              <- Script to run streamlit api
-│    |    └── streamlit_input_inference.py      
+│   ├── api              <- Script to run streamlit api
+│   │    └── streamlit_input_inference.py      
 │   │
-│    ├── data             <- Scripts to download or generate data
+│   ├── data             <- Scripts to download or generate data
 │   │   ├── __init__.py
 │   │   └── make_dataset.py
 │   │
