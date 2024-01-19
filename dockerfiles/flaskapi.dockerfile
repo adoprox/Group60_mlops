@@ -12,6 +12,7 @@ COPY requirements_inference.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY toxic_comments/ toxic_comments/
 COPY models/production/production_quantized.ckpt models/production/production_quantized.ckpt
+
 RUN pip install -r requirements.txt 
 RUN pip install . --no-deps 
 
