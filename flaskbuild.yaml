@@ -1,5 +1,5 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-f', './dockerfiles/flaskapi.dockerfile', '-t', 'gcr.io/propane-facet-410709/flask-inference', '.', '--no-cache']
-  - name: 'gcr.io/cloud-builders/docker'
-      args: ['push', 'gcr.io/propane-facet-410709/flask-inference']
+- name: 'gcr.io/cloud-builders/docker'
+  args:  ['build', '-f', './dockerfiles/flaskapi.dockerfile', '-t', 'gcr.io/propane-facet-410709/flask-inference', '.', '--no-cache']
+- name: 'gcr.io/cloud-builders/docker'
+  args:  ['push', 'gcr.io/propane-facet-410709/flask-inference'] 
